@@ -92,9 +92,9 @@ void callback(char *topic, byte *payload, unsigned int length) {
     handleSmokeMessage(topic, payload, length);
   } else if(strcmp(topic, "room_a/ac/send") == 0){
     handleACMessage(topic, payload, length);
-  } else {
-    handleTemperatureMessage(topic, payload, length);
   }
+  
+  handleTemperatureMessage(topic, payload, length);
 }
 
 /*---------------------- HANDLES ----------------------*/
@@ -174,10 +174,12 @@ void handleACMessage(char *topic, byte *payload, unsigned int length){
     ac = "0";
     Serial.print("AC is OFF: ");
     Serial.println(ac);
+    client.publish("room_a/ac/receive", String(ac).c_str());
   } else if(strcmp(acStatus, "1") == 0) {
     ac = "1";
     Serial.print("AC is ON: ");
     Serial.println(ac);
+    client.publish("room_a/ac/receive", String(ac).c_str());
   } 
 }
 
@@ -210,7 +212,7 @@ void SendReadings() {
   float hum = getRandomHumidity();
   Serial.print("Humidity: ");
   Serial.println(hum);
-  client.publish("room_a/humidity/receive", String(hum).c_str());
+  client.publish("room_a/hum/receive", String(hum).c_str());
 
   // SMOKE
   // if() adicionar logica do alarme estar desligado
