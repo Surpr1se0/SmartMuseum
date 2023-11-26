@@ -18,29 +18,109 @@
 
     <input type="button" value="Connect" onclick="OnConnect()" /> <br />
 
-    <div id="temperatureContainer">
-      <label>Temperature:</label>
-      <span id="temperatureValue"></span>
+    <div class="tab">
+      <button class="tablinks" onclick="changeTab(event, 'arduino1Content')">
+        Arduino 1
+      </button>
+      <button class="tablinks" onclick="changeTab(event, 'arduino2Content')">
+        Arduino 2
+      </button>
+      <button class="tablinks" onclick="changeTab(event, 'arduino3Content')">
+        Arduino 3
+      </button>
     </div>
 
-    <div id="humidityContainer">
-      <label>Humidity:</label>
-      <span id="humidityValue"></span>
+    <!-- TAB 1 - ARDUINO 1 -->
+    <div id="arduino1Content" class="tabcontent">
+      <span onclick="this.parentElement.style.display='none'" class="topright"
+        >&times</span
+      >
+      <div id="temperatureContainer">
+        <label>Temperature:</label>
+        <span id="temperatureValue"></span>
+      </div>
+
+      <div id="humidityContainer">
+        <label>Humidity:</label>
+        <span id="humidityValue"></span>
+      </div>
+
+      <div id="acContainer" class="statusContainer">
+        <label>AC:</label>
+        <span id="acValue"></span>
+      </div>
+
+      <div id="smokeContainer" class="statusContainer">
+        <label>Smoke:</label>
+        <span id="smokeValue"></span>
+      </div>
+
+      <div id="alarmContainer" class="statusContainer">
+        <label>Alarm:</label>
+        <span id="alarmValue"></span>
+      </div>
     </div>
 
-    <div id="acContainer" class="statusContainer">
-      <label>AC:</label>
-      <span id="acValue"></span>
+    <!-- TAB 2 - ARDUINO 2 -->
+    <div id="arduino2Content" class="tabcontent">
+      <span onclick="this.parentElement.style.display='none'" class="topright"
+        >&times</span
+      >
+      <div id="temperatureContainer">
+        <label>Temperature:</label>
+        <span id="temperatureValue"></span>
+      </div>
+
+      <div id="humidityContainer">
+        <label>Humidity:</label>
+        <span id="humidityValue"></span>
+      </div>
+
+      <div id="acContainer" class="statusContainer">
+        <label>AC:</label>
+        <span id="acValue"></span>
+      </div>
+
+      <div id="smokeContainer" class="statusContainer">
+        <label>Smoke:</label>
+        <span id="smokeValue"></span>
+      </div>
+
+      <div id="alarmContainer" class="statusContainer">
+        <label>Alarm:</label>
+        <span id="alarmValue"></span>
+      </div>
     </div>
 
-    <div id="smokeContainer" class="statusContainer">
-      <label>Smoke:</label>
-      <span id="smokeValue"></span>
-    </div>
+    <!-- TAB 3 - ARDUINO 3 -->
+    <div id="arduino3Content" class="tabcontent">
+      <span onclick="this.parentElement.style.display='none'" class="topright"
+        >&times</span
+      >
+      <div id="temperatureContainer">
+        <label>Temperature:</label>
+        <span id="temperatureValue"></span>
+      </div>
 
-    <div id="alarmContainer" class="statusContainer">
-      <label>Alarm:</label>
-      <span id="alarmValue"></span>
+      <div id="humidityContainer">
+        <label>Humidity:</label>
+        <span id="humidityValue"></span>
+      </div>
+
+      <div id="acContainer" class="statusContainer">
+        <label>AC:</label>
+        <span id="acValue"></span>
+      </div>
+
+      <div id="smokeContainer" class="statusContainer">
+        <label>Smoke:</label>
+        <span id="smokeValue"></span>
+      </div>
+
+      <div id="alarmContainer" class="statusContainer">
+        <label>Alarm:</label>
+        <span id="alarmValue"></span>
+      </div>
     </div>
 
     <!-- CONTAINER -->
