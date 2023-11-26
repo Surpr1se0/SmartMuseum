@@ -1,90 +1,143 @@
 const options = {
-    clientId: "mqtt-tester",
-    username: "user1",
-    password: "user1",
-  };
-  
-  const client = mqtt.connect("mqtt://localhost:9001", options);
-  
-  function OnConnect() {
-    // Subscribe to the topic
-    client.subscribe("ESP_A/detections", function (err) {
+  clientId: "MANAGEMENT_APP",
+  username: "user1",
+  password: "user1",
+};
+
+var temperature;
+var humidty;
+var alarm;
+var smoke;
+
+const client = mqtt.connect("mqtt://localhost:9001", options);
+
+function OnConnect() {
+  // Subscribe to the topic
+  client.subscribe(
+    [
+      "room_a/alive",
+      "room_a/temp/receive",
+      "room_a/hum/receive",
+      "room_a/alarm/receive",
+      "room_a/smoke/receive",
+      "room_a/ac/receive",
+    ],
+    function (err) {
       if (!err) {
-        console.log("Subscribed to 'ESP_A/detections");
+        console.log("Subscribed to 'All the topic /receive");
       } else {
-        console.log("Error subscribing to 'ESP_A/detections': " + err);
+        console.log("Error subscribing to 'topics /receive': " + err);
       }
-    });
-  
-    // Subscribe to the topic
-    client.subscribe("ESP_A/updates", function (err) {
-      if (!err) {
-        console.log("Subscribed to 'ESP_A/updates'");
-      } else {
-        console.log("Error subscribing to 'ESP_A/updates': " + err);
-      }
-    });
-  
-    // Update the page when a message is received
-    client.on("message", function (topic, message) {
-      if (topic == "ESP_A/detections") {
-        // Access the data
-        var data = JSON.parse(message);
-        var macAddress = data.mac;
-        var channel = data.channel;
-        var hour = data.hour;
-        var minute = data.minute;
-        var seconds = data.seconds;
-  
-        // Create a new div element for the current detection
-        var detectionDiv = document.createElement("div");
-        detectionDiv.setAttribute("style", "white-space:pre;");
-  
-        detectionDiv.textContent =
-          "MAC Address Detected: " +
-          macAddress +
-          "\r\n" +
-          "Channel: " +
-          channel +
-          "\r\n" +
-          "Last detected at: " +
-          hour +
-          ":" +
-          minute +
-          ":" +
-          seconds +
-          "\n\n";
-  
-        // Add the new div to the page
-        document.getElementById("detectionsContainer").appendChild(detectionDiv);
-      }
-      else if(topic == "ESP_A/updates") {
-        var updateMessage = message.toString();
-  
-        var updateDiv = document.createElement("div");
-        updateDiv.setAttribute("style", "white-space:pre;");
-  
-        updateDiv.textContent = "Update Message: " + updateMessage + "\n\n";
-    
-        // Add new div to the page
-        document.getElementById("detectionsContainer").appendChild(updateDiv);
-      }
-    });
-  }
-  
-  const macAddressInput = document.getElementById("macAddress");
-  const sendMacAddressButton = document.getElementById("sendMacAddress");
-  
-  sendMacAddressButton.addEventListener("click", function () {
-    var macAddress = macAddressInput.value;
-    console.log("Button Clicked");
-    // Publish the MAC address to the MQTT topic
-    client.publish("ESP_A/detections_rx", macAddress, function (err) {
-      if (err) {
-        console.error("Error publishing to 'ESP_A/detections_rx': " + err);
-      } else {
-        console.log("Published to 'ESP_A/detections_rx': " + macAddress);
-      }
-    });
+    }
+  );
+
+  // Update when receive message
+  client.on("message", function (topic, message) {
+    if (topic == "room_a/temp/receive") {
+      temperature = message;
+    } else if (topic == "room_a/hum/receive") {
+      humidty = message;
+    } else if (topic == "room_a/alarm/receive") {
+      alarm = message;
+    } else if (topic == "room_a/smoke/receive") {
+      smoke = message;
+    } else if (topic == "room_a/smoke/ac") {
+      smoke = message;
+    }
+
+    // Print out the messages
+    var updateMessage = message.toString();
+    var updateDiv = document.createElement("div");
+    updateDiv.setAttribute("style", "white-space:pre;");
+    updateDiv.textContent = "Update Message: " + updateMessage + "\n\n";
+
+    // Add new div to the page
+    document.getElementById("detectionsContainer").appendChild(updateDiv);
   });
-  
+}
+
+// Send Threshold for temperature
+const max_temp_input = document.getElementById("max_temp");
+const min_temp_input = document.getElementById("min_temp");
+const send_temp_btn = document.getElementById("send_temp-btn");
+
+send_temp_btn.addEventListener("click", function () {
+  var maxTemp = max_temp_input.value;
+  var minTemp = min_temp_input.value;
+
+  // Publish the Temps to the MQTT topic
+  client.publish("room_a/temp/max", maxTemp, function (err) {
+    if (err) {
+      console.error("Error publishing to 'room_a/temp/max': " + err);
+    } else {
+      console.log("Published to 'room_a/temp/max': " + maxTemp);
+    }
+  });
+
+  client.publish("room_a/temp/min", minTemp, function (err) {
+    if (err) {
+      console.error("Error publishing to 'room_a/temp/min': " + err);
+    } else {
+      console.log("Published to 'room_a/temp/min': " + minTemp);
+    }
+  });
+});
+
+const max_hum_input = document.getElementById("max_hum");
+const min_hum_input = document.getElementById("min_hum");
+const send_hum_btn = document.getElementById("send_hum-btn");
+
+send_hum_btn.addEventListener("click", function () {
+  var maxHum = max_hum_input.value;
+  var minHum = min_hum_input.value;
+
+  // Publish the Temps to the MQTT topic
+  client.publish("room_a/hum/max", maxHum, function (err) {
+    if (err) {
+      console.error("Error publishing to 'room_a/hum/max': " + err);
+    } else {
+      console.log("Published to 'room_a/hum/max': " + maxHum);
+    }
+  });
+
+  client.publish("room_a/hum/min", minHum, function (err) {
+    if (err) {
+      console.error("Error publishing to 'room_a/hum/min': " + err);
+    } else {
+      console.log("Published to 'room_a/hum/min': " + minHum);
+    }
+  });
+});
+
+
+// ----------------Send Alarm ON/OFF for MOVEMENT----------------
+document.getElementById("movementAlarm").addEventListener("change", function () {
+  var movementAlarmStatus = this.checked ? "1" : "0";
+  client.publish("room_a/alarm/send", movementAlarmStatus);
+});
+
+// Send Cancel for MOVEMENT
+document.getElementById("cancelAlarmBtn").addEventListener("click", function () {
+  client.publish("room_a/alarm/send", "2");
+});
+
+// ----------------Send Alarm ON/OFF for MOVEMENT----------------
+
+// Send Alarm ON/OFF for Smoke
+document.getElementById("smokeAlarm").addEventListener("change", function () {
+  var smokeAlarmStatus = this.checked ? "1" : "0";
+  client.publish("room_a/smoke/send", smokeAlarmStatus);
+});
+
+// Send Cancel for Smoke
+document.getElementById("cancelSmokeAlarmBtn").addEventListener("click", function () {
+  client.publish("room_a/smoke/send", "2");
+});
+
+// ----------------Send Alarm ON/OFF for AC----------------
+
+// Send Alarm ON/OFF for Smoke
+document.getElementById("acStatus").addEventListener("change", function () {
+  var acStatus = this.checked ? "1" : "0";
+  client.publish("room_a/ac/send", acStatus);
+});

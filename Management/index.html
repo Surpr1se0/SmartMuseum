@@ -11,7 +11,6 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     ></script>
-
   </head>
 
   <body>
@@ -19,16 +18,36 @@
 
     <input type="button" value="Connect" onclick="OnConnect()" /> <br />
 
-    <input type="text" id="macAddress" placeholder="Enter the MAC address to detect">
+    <!-- Define Max and Min Values for the TEMPERATURE -->
+    <input type="text" id="max_temp" placeholder="Enter the Max Temperature " />
+    <input type="text" id="min_temp" placeholder="Enter the Min Temperature " />
+    <button id="send_temp-btn">Define Temp Values</button>
 
-    <button id="sendMacAddress">Send MAC Address</button>
+    <br /><br />
+
+    <!-- Define Max and Min Values for the HUMIDITY -->
+    <input type="text" id="max_hum" placeholder="Enter the Max Humidity " />
+    <input type="text" id="min_hum" placeholder="Enter the Min Humidity " />
+    <button id="send_hum-btn">Define Hum Values</button>
+
+    <br /><br />
+
+    <!-- MOVEMENT status -->
+    <label> <input type="checkbox" id="movementAlarm" /> Movement Alarm </label>
+    <button id="cancelAlarmBtn">Cancel Movement Alarm</button>
+
+    <!-- SMOKE status -->
+    <label> <input type="checkbox" id="smokeAlarm" /> Smoke Alarm </label>
+    <button id="cancelSmokeAlarmBtn">Cancel Smoke Alarm</button>
     
-    <button id="updateMacAddress">Delete MAC Address</button>
-    
+    <br /><br />
+
+    <!-- AC status -->
+    <label> <input type="checkbox" id="acStatus" /> Ac Status </label>
+
+    <!-- CONTAINER -->
     <div id="detectionsContainer"></div>
-    
-    <script src="app-teste.js"></script>
+
+    <script src="app-management.js"></script>
   </body>
 </html>
-
-
