@@ -24,47 +24,148 @@
     />
     <br />
 
-    <div id="temperatureContainer" class="statusContainer">
-      <!-- Define Max and Min Values for the TEMPERATURE -->
-      <input
-        type="text"
-        id="max_temp"
-        placeholder="Enter the Max Temperature "
-      />
-      <input
-        type="text"
-        id="min_temp"
-        placeholder="Enter the Min Temperature "
-      />
-      <button id="send_temp-btn">Define Temp Values</button>
+    <div class="tab">
+      <button class="tablinks" onclick="changeTab(event, 'arduino1Content')">
+        Arduino 1
+      </button>
+      <button class="tablinks" onclick="changeTab(event, 'arduino2Content')">
+        Arduino 2
+      </button>
+      <button class="tablinks" onclick="changeTab(event, 'arduino3Content')">
+        Arduino 3
+      </button>
     </div>
 
-    <div id="humidityContainer" class="statusContainer">
-      <!-- Define Max and Min Values for the HUMIDITY -->
-      <input type="text" id="max_hum" placeholder="Enter the Max Humidity " />
-      <input type="text" id="min_hum" placeholder="Enter the Min Humidity " />
-      <button id="send_hum-btn">Define Hum Values</button>
+    <!-- Arduino 1 Content -->
+    <div id="arduino1Content" class="tabcontent">
+      <div id="temperatureContainer" class="statusContainer">
+        <!-- Define Max and Min Values for the TEMPERATURE -->
+        <input
+          type="text"
+          id="max_temp"
+          placeholder="Enter the Max Temperature "
+        />
+        <input
+          type="text"
+          id="min_temp"
+          placeholder="Enter the Min Temperature "
+        />
+        <button id="send_temp-btn">Define Temp Values</button>
+      </div>
+
+      <div id="humidityContainer" class="statusContainer">
+        <!-- Define Max and Min Values for the HUMIDITY -->
+        <input type="text" id="max_hum" placeholder="Enter the Max Humidity " />
+        <input type="text" id="min_hum" placeholder="Enter the Min Humidity " />
+        <button id="send_hum-btn">Define Hum Values</button>
+      </div>
+
+      <!-- MOVEMENT status -->
+      <div id="movementContainer" class="statusContainer">
+        <label>
+          <input type="checkbox" id="movementAlarm" /> Movement Alarm
+        </label>
+        <button id="cancelAlarmBtn">Cancel Movement Alarm</button>
+      </div>
+
+      <!-- SMOKE status -->
+      <div id="smokeContainer" class="statusContainer">
+        <label> <input type="checkbox" id="smokeAlarm" /> Smoke Alarm </label>
+        <button id="cancelSmokeAlarmBtn">Cancel Smoke Alarm</button>
+      </div>
+
+      <!-- AC status -->
+      <div id="acContainer" class="statusContainer">
+        <label> <input type="checkbox" id="acStatus" /> Ac Status </label>
+      </div>
     </div>
 
-    <!-- MOVEMENT status -->
-    <div id="movementContainer" class="statusContainer">
-      <label>
-        <input type="checkbox" id="movementAlarm" /> Movement Alarm
-      </label>
-      <button id="cancelAlarmBtn">Cancel Movement Alarm</button>
+    <!-- Arduino 2 Content -->
+    <div id="arduino2Content" class="tabcontent">
+      <div id="temperatureContainer" class="statusContainer">
+        <!-- Define Max and Min Values for the TEMPERATURE -->
+        <input
+          type="text"
+          id="max_temp"
+          placeholder="Enter the Max Temperature "
+        />
+        <input
+          type="text"
+          id="min_temp"
+          placeholder="Enter the Min Temperature "
+        />
+        <button id="send_temp-btn">Define Temp Values</button>
+      </div>
+
+      <div id="humidityContainer" class="statusContainer">
+        <!-- Define Max and Min Values for the HUMIDITY -->
+        <input type="text" id="max_hum" placeholder="Enter the Max Humidity " />
+        <input type="text" id="min_hum" placeholder="Enter the Min Humidity " />
+        <button id="send_hum-btn">Define Hum Values</button>
+      </div>
+
+      <!-- MOVEMENT status -->
+      <div id="movementContainer" class="statusContainer">
+        <label>
+          <input type="checkbox" id="movementAlarm" /> Movement Alarm
+        </label>
+        <button id="cancelAlarmBtn">Cancel Movement Alarm</button>
+      </div>
+
+      <!-- SMOKE status -->
+      <div id="smokeContainer" class="statusContainer">
+        <label> <input type="checkbox" id="smokeAlarm" /> Smoke Alarm </label>
+        <button id="cancelSmokeAlarmBtn">Cancel Smoke Alarm</button>
+      </div>
+
+      <!-- AC status -->
+      <div id="acContainer" class="statusContainer">
+        <label> <input type="checkbox" id="acStatus" /> Ac Status </label>
+      </div>
     </div>
 
+    <!-- Arduino 3 Content -->
+    <div id="arduino3Content" class="tabcontent">
+      <div id="temperatureContainer" class="statusContainer">
+        <!-- Define Max and Min Values for the TEMPERATURE -->
+        <input
+          type="text"
+          id="max_temp"
+          placeholder="Enter the Max Temperature "
+        />
+        <input
+          type="text"
+          id="min_temp"
+          placeholder="Enter the Min Temperature "
+        />
+        <button id="send_temp-btn">Define Temp Values</button>
+      </div>
 
-    <!-- SMOKE status -->
-    <div id="smokeContainer" class="statusContainer">
-      <label> <input type="checkbox" id="smokeAlarm" /> Smoke Alarm </label>
-      <button id="cancelSmokeAlarmBtn">Cancel Smoke Alarm</button>
-    </div>
+      <div id="humidityContainer" class="statusContainer">
+        <!-- Define Max and Min Values for the HUMIDITY -->
+        <input type="text" id="max_hum" placeholder="Enter the Max Humidity " />
+        <input type="text" id="min_hum" placeholder="Enter the Min Humidity " />
+        <button id="send_hum-btn">Define Hum Values</button>
+      </div>
 
+      <!-- MOVEMENT status -->
+      <div id="movementContainer" class="statusContainer">
+        <label>
+          <input type="checkbox" id="movementAlarm" /> Movement Alarm
+        </label>
+        <button id="cancelAlarmBtn">Cancel Movement Alarm</button>
+      </div>
 
-    <!-- AC status -->
-    <div id="acContainer" class="statusContainer">
-      <label> <input type="checkbox" id="acStatus" /> Ac Status </label>
+      <!-- SMOKE status -->
+      <div id="smokeContainer" class="statusContainer">
+        <label> <input type="checkbox" id="smokeAlarm" /> Smoke Alarm </label>
+        <button id="cancelSmokeAlarmBtn">Cancel Smoke Alarm</button>
+      </div>
+
+      <!-- AC status -->
+      <div id="acContainer" class="statusContainer">
+        <label> <input type="checkbox" id="acStatus" /> Ac Status </label>
+      </div>
     </div>
 
     <!-- CONTAINER -->
