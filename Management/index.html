@@ -14,36 +14,58 @@
   </head>
 
   <body>
-    <h1>Management</h1>
+    <h1>Management App</h1>
 
-    <input type="button" value="Connect" onclick="OnConnect()" /> <br />
+    <input
+      id="Connect-btn"
+      type="button"
+      value="Connect"
+      onclick="OnConnect()"
+    />
+    <br />
 
-    <!-- Define Max and Min Values for the TEMPERATURE -->
-    <input type="text" id="max_temp" placeholder="Enter the Max Temperature " />
-    <input type="text" id="min_temp" placeholder="Enter the Min Temperature " />
-    <button id="send_temp-btn">Define Temp Values</button>
+    <div id="temperatureContainer" class="statusContainer">
+      <!-- Define Max and Min Values for the TEMPERATURE -->
+      <input
+        type="text"
+        id="max_temp"
+        placeholder="Enter the Max Temperature "
+      />
+      <input
+        type="text"
+        id="min_temp"
+        placeholder="Enter the Min Temperature "
+      />
+      <button id="send_temp-btn">Define Temp Values</button>
+    </div>
 
-    <br /><br />
-
-    <!-- Define Max and Min Values for the HUMIDITY -->
-    <input type="text" id="max_hum" placeholder="Enter the Max Humidity " />
-    <input type="text" id="min_hum" placeholder="Enter the Min Humidity " />
-    <button id="send_hum-btn">Define Hum Values</button>
-
-    <br /><br />
+    <div id="humidityContainer" class="statusContainer">
+      <!-- Define Max and Min Values for the HUMIDITY -->
+      <input type="text" id="max_hum" placeholder="Enter the Max Humidity " />
+      <input type="text" id="min_hum" placeholder="Enter the Min Humidity " />
+      <button id="send_hum-btn">Define Hum Values</button>
+    </div>
 
     <!-- MOVEMENT status -->
-    <label> <input type="checkbox" id="movementAlarm" /> Movement Alarm </label>
-    <button id="cancelAlarmBtn">Cancel Movement Alarm</button>
+    <div id="movementContainer" class="statusContainer">
+      <label>
+        <input type="checkbox" id="movementAlarm" /> Movement Alarm
+      </label>
+      <button id="cancelAlarmBtn">Cancel Movement Alarm</button>
+    </div>
+
 
     <!-- SMOKE status -->
-    <label> <input type="checkbox" id="smokeAlarm" /> Smoke Alarm </label>
-    <button id="cancelSmokeAlarmBtn">Cancel Smoke Alarm</button>
-    
-    <br /><br />
+    <div id="smokeContainer" class="statusContainer">
+      <label> <input type="checkbox" id="smokeAlarm" /> Smoke Alarm </label>
+      <button id="cancelSmokeAlarmBtn">Cancel Smoke Alarm</button>
+    </div>
+
 
     <!-- AC status -->
-    <label> <input type="checkbox" id="acStatus" /> Ac Status </label>
+    <div id="acContainer" class="statusContainer">
+      <label> <input type="checkbox" id="acStatus" /> Ac Status </label>
+    </div>
 
     <!-- CONTAINER -->
     <div id="detectionsContainer"></div>

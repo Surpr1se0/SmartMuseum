@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Actuactor App</title>
+    <title>Actuator App</title>
 
     <link rel="stylesheet" href="style.css" />
     <script
@@ -11,24 +11,41 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     ></script>
-
   </head>
 
   <body>
-    <h1>Actuator</h1>
+    <h1>Actuator App</h1>
 
     <input type="button" value="Connect" onclick="OnConnect()" /> <br />
 
-    <input type="text" id="macAddress" placeholder="Enter the MAC address to detect">
+    <div id="temperatureContainer">
+      <label>Temperature:</label>
+      <span id="temperatureValue"></span>
+    </div>
 
-    <button id="sendMacAddress">Send Message</button>
-    
-    <!-- <button id="updateMacAddress">Delete MAC Address</button> -->
-    
+    <div id="humidityContainer">
+      <label>Humidity:</label>
+      <span id="humidityValue"></span>
+    </div>
+
+    <div id="acContainer" class="statusContainer">
+      <label>AC:</label>
+      <span id="acValue"></span>
+    </div>
+
+    <div id="smokeContainer" class="statusContainer">
+      <label>Smoke:</label>
+      <span id="smokeValue"></span>
+    </div>
+
+    <div id="alarmContainer" class="statusContainer">
+      <label>Alarm:</label>
+      <span id="alarmValue"></span>
+    </div>
+
+    <!-- CONTAINER -->
     <div id="detectionsContainer"></div>
-    
+
     <script src="app-actuator.js"></script>
   </body>
 </html>
-
-

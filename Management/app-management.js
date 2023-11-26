@@ -136,7 +136,7 @@ document.getElementById("cancelSmokeAlarmBtn").addEventListener("click", functio
 
 // ----------------Send Alarm ON/OFF for AC----------------
 
-// Send Alarm ON/OFF for Smoke
+// Send Alarm ON/OFF for AC
 document.getElementById("acStatus").addEventListener("change", function () {
   var acStatus = this.checked ? "1" : "0";
   client.publish("room_a/ac/send", acStatus);

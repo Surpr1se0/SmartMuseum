@@ -1,0 +1,77 @@
+body {
+  /* font-family: Arial, sans-serif; */
+  background-color: #f5f5f5;
+  margin: 20px;
+}
+
+h1 {
+  color: #333;
+}
+
+input,
+button,
+label {
+  margin-bottom: 10px;
+}
+
+input[type="text"],
+input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+div {
+  margin-bottom: 15px;
+}
+
+label {
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.statusContainer {
+  background-color: #fff;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+#detectionsContainer {
+  background-color: #fff;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+button {
+  padding: 8px 12px;
+  background-color: #4e59cc;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #2c36aa;
+}
+
+.checkbox-label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.checkbox-label input {
+  margin-right: 5px;
+}
+
+.checkbox-label span {
+  color: #333;
+}
+
+#Connect-btn {
+  padding: 10px;
+  font-size: 16px;
+  margin-bottom: 20px;
+}
