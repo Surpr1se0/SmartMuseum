@@ -4,10 +4,20 @@ const options = {
   password: "user1",
 };
 
-var temperature;
-var humidty;
-var alarm;
-var smoke;
+var temperature_A;
+var humidty_A;
+var alarm_A;
+var smoke_A;
+
+var temperature_B;
+var humidty_B;
+var alarm_B;
+var smoke_B;
+
+var temperature_C;
+var humidty_C;
+var alarm_C;
+var smoke_C;
 
 function changeTab(event, arduinoNum) {
   // Declare all variables
@@ -28,7 +38,7 @@ function changeTab(event, arduinoNum) {
   // Show the current tab, and add an "active" class to the button that opened the tab
   document.getElementById(arduinoNum).style.display = "block";
   event.currentTarget.className += " active";
-} 
+}
 
 const client = mqtt.connect("mqtt://localhost:9001", options);
 
@@ -42,6 +52,20 @@ function OnConnect() {
       "room_a/alarm/receive",
       "room_a/smoke/receive",
       "room_a/ac/receive",
+
+      "room_b/alive",
+      "room_b/temp/receive",
+      "room_b/hum/receive",
+      "room_b/alarm/receive",
+      "room_b/smoke/receive",
+      "room_b/ac/receive",
+
+      "room_c/alive",
+      "room_c/temp/receive",
+      "room_c/hum/receive",
+      "room_c/alarm/receive",
+      "room_c/smoke/receive",
+      "room_c/ac/receive",
     ],
     function (err) {
       if (!err) {
@@ -55,25 +79,69 @@ function OnConnect() {
   // Update when receive message
   client.on("message", function (topic, message) {
     if (topic == "room_a/temp/receive") {
-      temperature = message;
+      temperature_A = message;
     } else if (topic == "room_a/hum/receive") {
-      humidty = message;
+      humidty_A = message;
     } else if (topic == "room_a/alarm/receive") {
-      alarm = message;
+      alarm_A = message;
     } else if (topic == "room_a/smoke/receive") {
-      smoke = message;
+      smoke_A = message;
     } else if (topic == "room_a/ac/receive") {
-      ac = message;
+      ac_A = message;
     }
 
-    // Print out the messages
-    var updateMessage = message.toString();
-    var updateDiv = document.createElement("div");
-    updateDiv.setAttribute("style", "white-space:pre;");
-    updateDiv.textContent = "Update Message: " + updateMessage + "\n\n";
+    if (topic == "room_b/temp/receive") {
+      temperature_B = message;
+    } else if (topic == "room_b/hum/receive") {
+      humidty_B = message;
+    } else if (topic == "room_b/alarm/receive") {
+      alarm_B = message;
+    } else if (topic == "room_b/smoke/receive") {
+      smoke_B = message;
+    } else if (topic == "room_b/ac/receive") {
+      ac_B = message;
+    }
 
-    // Add new div to the page
-    document.getElementById("detectionsContainer").appendChild(updateDiv);
+    if (topic == "room_c/temp/receive") {
+      temperature_C = message;
+    } else if (topic == "room_c/hum/receive") {
+      humidty_C = message;
+    } else if (topic == "room_c/alarm/receive") {
+      alarm_C = message;
+    } else if (topic == "room_c/smoke/receive") {
+      smoke_C = message;
+    } else if (topic == "room_c/ac/receive") {
+      ac_C = message;
+    }
+
+    if (topic.startsWith("room_a/")) {
+      // Print out the messages
+      var updateMessage = message.toString();
+      var updateDiv = document.createElement("div");
+      updateDiv.setAttribute("style", "white-space:pre;");
+      updateDiv.textContent = "Update Message: " + updateMessage + "\n\n";
+      // Add new div to the page
+      document.getElementById("detections1Container").appendChild(updateDiv);
+
+    } else if (topic.startsWith("room_b/")) {z
+      // Print out the messages
+      var updateMessage = message.toString();
+      var updateDiv = document.createElement("div");
+      updateDiv.setAttribute("style", "white-space:pre;");
+      updateDiv.textContent = "Update Message: " + updateMessage + "\n\n";
+      // Add new div to the page
+      document.getElementById("detections2Container").appendChild(updateDiv);
+
+    } else if (topic.startsWith("room_c/")) {
+      // Print out the messages
+      var updateMessage = message.toString();
+      var updateDiv = document.createElement("div");
+      updateDiv.setAttribute("style", "white-space:pre;");
+      updateDiv.textContent = "Update Message: " + updateMessage + "\n\n";
+
+      // Add new div to the page
+      document.getElementById("detections3Container").appendChild(updateDiv);
+    }
   });
 }
 
@@ -130,17 +198,22 @@ send_hum_btn.addEventListener("click", function () {
   });
 });
 
-
 // ----------------Send Alarm ON/OFF for MOVEMENT----------------
 document.getElementById("movementAlarm").addEventListener("change", function () {
-  var movementAlarmStatus = this.checked ? "1" : "0";
-  client.publish("room_a/alarm/send", movementAlarmStatus);
-});
+    var movementAlarmStatus = this.checked ? "1" : "0";
+    client.publish("room_a/alarm/send", movementAlarmStatus);
+  });
 
 // Send Cancel for MOVEMENT
 document.getElementById("cancelAlarmBtn").addEventListener("click", function () {
-  client.publish("room_a/alarm/send", "2");
-});
+    // Was the alarm triggered?
+    if (alarm == "1") {
+      client.publish("room_a/alarm/send", "2");
+    } else {
+      window.alert("Cannot cancel the alarm because it was not triggered!");
+      console.log("Cannot Send!");
+    }
+  });
 
 // ----------------Send Alarm ON/OFF for MOVEMENT----------------
 
@@ -152,13 +225,22 @@ document.getElementById("smokeAlarm").addEventListener("change", function () {
 
 // Send Cancel for Smoke
 document.getElementById("cancelSmokeAlarmBtn").addEventListener("click", function () {
-  client.publish("room_a/smoke/send", "2");
-});
+    // Was the alarm triggered?
+    if (smoke == "1") {
+      client.publish("room_a/smoke/send", "2");
+    } else {
+      window.alert("Cannot cancel the alarm because it was not triggered!");
+      console.log("Cannot Send!");
+    }
+  });
 
 // ----------------Send Alarm ON/OFF for AC----------------
 
-// Send Alarm ON/OFF for AC // TEM DE SE ALTERAR ISTO 
+// Send Alarm ON/OFF for AC
 document.getElementById("acStatus").addEventListener("change", function () {
   var acStatus = this.checked ? "1" : "0";
   client.publish("room_a/ac/send", acStatus);
 });
+
+
+
