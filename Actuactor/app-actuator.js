@@ -5,12 +5,12 @@ const options = {
 };
 
 // these variables refer to => STATUS
-var temperature;
-var humidity;
-var alarm;
-var smoke;
-var ac;
-var alive = "0";
+var temperature_a, temperature_b, temperate_c;
+var humidity_a, humidity_b, humidity_c;
+var alarm_a, alarm_b, alarm_c;
+var smoke_a, smoke_b, smoke_c;
+var ac_a, ac_b, ac_c;
+var alive_a, alive_b, alive_c = "0";
 
 const client = mqtt.connect("mqtt://localhost:9001", options);
 
@@ -24,6 +24,20 @@ function OnConnect() {
       "room_a/alarm/receive",
       "room_a/smoke/receive",
       "room_a/ac/receive",
+
+      "room_b/alive",
+      "room_b/temp/receive",
+      "room_b/hum/receive",
+      "room_b/alarm/receive",
+      "room_b/smoke/receive",
+      "room_b/ac/receive",
+
+      "room_c/alive", 
+      "room_c/temp/receive",
+      "room_c/hum/receive",
+      "room_c/alarm/receive",
+      "room_c/smoke/receive",
+      "room_c/ac/receive",
     ],
     function (err) {
       if (!err) {
@@ -37,17 +51,45 @@ function OnConnect() {
   // Update when receive message
   client.on("message", function (topic, message) {
     if (topic == "room_a/temp/receive") {
-      temperature = message;
+      temperature_a = message;
     } else if (topic == "room_a/hum/receive") {
-      humidity = message;
+      humidity_a = message;
     } else if (topic == "room_a/alarm/receive") {
-      alarm = message;
+      alarm_a = message;
     } else if (topic == "room_a/smoke/receive") {
-      smoke = message;
+      smoke_a = message;
     } else if (topic == "room_a/ac/receive") {
-      ac = message;
+      ac_a = message;
     } else if (topic == "room_a/alive"){
-      alive = "1";
+      alive_a = "1";
+    }
+
+    if (topic == "room_b/temp/receive") {
+      temperature_b = message;
+    } else if (topic == "room_b/hum/receive") {
+      humidity_b = message;
+    } else if (topic == "room_b/alarm/receive") {
+      alarm_b = message;
+    } else if (topic == "room_b/smoke/receive") {
+      smoke_b = message;
+    } else if (topic == "room_b/ac/receive") {
+      ac_b = message;
+    } else if (topic == "room_b/alive"){
+      alive_b = "1";
+    }
+
+    if (topic == "room_c/temp/receive") {
+      temperature_c = message;
+    } else if (topic == "room_c/hum/receive") {
+      humidity_c = message;
+    } else if (topic == "room_c/alarm/receive") {
+      alarm_c = message;
+    } else if (topic == "room_c/smoke/receive") {
+      smoke_c = message;
+    } else if (topic == "room_c/ac/receive") {
+      ac_c = message;
+    } else if (topic == "room_c/alive"){
+      alive_c = "1";
     }
 
     // Print out the messages
@@ -59,17 +101,34 @@ function OnConnect() {
     // Add new div to the page
     document.getElementById("detectionsContainer").appendChild(updateDiv);
 
-    updateValues();
+    updateValues_A();
   });
 }
 
-function updateValues() {
-  document.getElementById("temperatureValue").innerText = temperature;
-  document.getElementById("humidityValue").innerText = humidity;
+// FOR ARDUINO NUMBER 1
+function updateValues_A() {
+  document.getElementById("temperatureValue_a").innerText = temperature_a;
+  document.getElementById("humidityValue_a").innerText = humidity_a;
+  document.getElementById("acValue_a").innerText = ac_a;
+  document.getElementById("smokeValue_a").innerText = smoke_a;
+  document.getElementById("alarmValue_a").innerText = alarm_a;
+}
 
-  document.getElementById("acValue").innerText = ac;
-  document.getElementById("smokeValue").innerText = smoke;
-  document.getElementById("alarmValue").innerText = alarm;
+// FOR ARDUINO NUMBER 2
+function updateValues_B() {
+  document.getElementById("temperatureValue_b").innerText = temperature_b;
+  document.getElementById("humidityValue_b").innerText = humidity_b;
+  document.getElementById("acValue_b").innerText = ac_b;
+  document.getElementById("smokeValue_b").innerText = smoke_b;
+  document.getElementById("alarmValue_b").innerText = alarm_b;
+}
+
+function updateValues_C() {
+  document.getElementById("temperatureValue_c").innerText = temperature_c;
+  document.getElementById("humidityValue_c").innerText = humidity_c;
+  document.getElementById("acValue_c").innerText = ac_c;
+  document.getElementById("smokeValue_c").innerText = smoke_c;
+  document.getElementById("alarmValue_c").innerText = alarm_c;
 }
 
 function changeTab(event, arduinoNum) {
@@ -92,3 +151,4 @@ function changeTab(event, arduinoNum) {
   document.getElementById(arduinoNum).style.display = "block";
   event.currentTarget.className += " active";
 } 
+

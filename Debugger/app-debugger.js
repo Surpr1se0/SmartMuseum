@@ -46,7 +46,5 @@ function OnConnect() {
       // Add new div to the page
       document.getElementById("detectionsContainer-C").appendChild(updateDiv);
     }
-
-    updateValues();
   });
 }

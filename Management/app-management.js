@@ -62,8 +62,8 @@ function OnConnect() {
       alarm = message;
     } else if (topic == "room_a/smoke/receive") {
       smoke = message;
-    } else if (topic == "room_a/smoke/ac") {
-      smoke = message;
+    } else if (topic == "room_a/ac/receive") {
+      ac = message;
     }
 
     // Print out the messages
@@ -157,7 +157,7 @@ document.getElementById("cancelSmokeAlarmBtn").addEventListener("click", functio
 
 // ----------------Send Alarm ON/OFF for AC----------------
 
-// Send Alarm ON/OFF for AC
+// Send Alarm ON/OFF for AC // TEM DE SE ALTERAR ISTO 
 document.getElementById("acStatus").addEventListener("change", function () {
   var acStatus = this.checked ? "1" : "0";
   client.publish("room_a/ac/send", acStatus);
