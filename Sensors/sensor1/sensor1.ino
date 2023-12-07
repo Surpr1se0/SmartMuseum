@@ -1,7 +1,7 @@
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>             // WiFi
-const char *ssid = " ";      // Enter your WiFi name
-const char *password = " ";  // Enter WiFi password
+const char *ssid = "";      // Enter your WiFi name
+const char *password = "";  // Enter WiFi password
 
 // MQTT Brooker Login
 const char *mqtt_user = "user1";
@@ -24,7 +24,7 @@ String alarm;         // [ON/OFF/CANCEL]
 String alarm_update;  // [TRUE/FALSE]
 String smoke;         // [ON/OFF/CANCEL]
 String smoke_update;  // [TRUE/FALSE]
-String ac = "0";      // [ON/OFF]
+String ac = "0";            // [ON/OFF]
 String ac_update;
 
 WiFiClient espClient;
