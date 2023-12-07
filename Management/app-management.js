@@ -145,6 +145,7 @@ function OnConnect() {
   });
 }
 
+// #########################  NODE A  #########################
 // Send Threshold for temperature
 const max_temp_input = document.getElementById("max_temp");
 const min_temp_input = document.getElementById("min_temp");
@@ -244,3 +245,200 @@ document.getElementById("acStatus").addEventListener("change", function () {
 
 
 
+// #########################  NODE B  #########################
+// Send Threshold for temperature
+const max_temp_input_b = document.getElementById("max_temp2");
+const min_temp_input_b = document.getElementById("min_temp2");
+const send_temp_btn_b = document.getElementById("send_temp-btn2");
+
+send_temp_btn_b.addEventListener("click", function () {
+  var maxTemp = max_temp_input_b.value;
+  var minTemp = min_temp_input_b.value;
+
+  // Publish the Temps to the MQTT topic
+  client.publish("room_b/temp/max", maxTemp, function (err) {
+    if (err) {
+      console.error("Error publishing to 'room_b/temp/max': " + err);
+    } else {
+      console.log("Published to 'room_b/temp/max': " + maxTemp);
+    }
+  });
+
+  client.publish("room_b/temp/min", minTemp, function (err) {
+    if (err) {
+      console.error("Error publishing to 'room_b/temp/min': " + err);
+    } else {
+      console.log("Published to 'room_b/temp/min': " + minTemp);
+    }
+  });
+});
+
+const max_hum_input_b = document.getElementById("max_hum2");
+const min_hum_input_b = document.getElementById("min_hum2");
+const send_hum_btn_b = document.getElementById("send_hum-btn2");
+
+send_hum_btn_b.addEventListener("click", function () {
+  var maxHum = max_hum_input_b.value;
+  var minHum = min_hum_input_b.value;
+
+  // Publish the Temps to the MQTT topic
+  client.publish("room_b/hum/max", maxHum, function (err) {
+    if (err) {
+      console.error("Error publishing to 'room_b/hum/max': " + err);
+    } else {
+      console.log("Published to 'room_b/hum/max': " + maxHum);
+    }
+  });
+
+  client.publish("room_b/hum/min", minHum, function (err) {
+    if (err) {
+      console.error("Error publishing to 'room_b/hum/min': " + err);
+    } else {
+      console.log("Published to 'room_b/hum/min': " + minHum);
+    }
+  });
+});
+
+// ----------------Send Alarm ON/OFF for MOVEMENT----------------
+document.getElementById("movementAlarm2").addEventListener("change", function () {
+  var movementAlarmStatus = this.checked ? "1" : "0";
+  client.publish("room_b/alarm/send", movementAlarmStatus);
+});
+
+// Send Cancel for MOVEMENT
+document.getElementById("cancelAlarmBtn2").addEventListener("click", function () {
+  // Was the alarm triggered?
+  if (alarm == "1") {
+    client.publish("room_b/alarm/send", "2");
+  } else {
+    window.alert("Cannot cancel the alarm because it was not triggered!");
+    console.log("Cannot Send!");
+  }
+});
+
+// ----------------Send Alarm ON/OFF for MOVEMENT----------------
+
+// Send Alarm ON/OFF for Smoke
+document.getElementById("smokeAlarm2").addEventListener("change", function () {
+var smokeAlarmStatus = this.checked ? "1" : "0";
+client.publish("room_b/smoke/send", smokeAlarmStatus);
+});
+
+// Send Cancel for Smoke
+document.getElementById("cancelSmokeAlarmBtn2").addEventListener("click", function () {
+  // Was the alarm triggered?
+  if (smoke == "1") {
+    client.publish("room_b/smoke/send", "2");
+  } else {
+    window.alert("Cannot cancel the alarm because it was not triggered!");
+    console.log("Cannot Send!");
+  }
+});
+
+// ----------------Send Alarm ON/OFF for AC----------------
+
+// Send Alarm ON/OFF for AC
+document.getElementById("acStatus2").addEventListener("change", function () {
+var acStatus = this.checked ? "1" : "0";
+client.publish("room_b/ac/send", acStatus);
+});
+
+
+
+// #########################  NODE C  #########################
+// Send Threshold for temperature
+const max_temp_input_c = document.getElementById("max_temp3");
+const min_temp_input_c = document.getElementById("min_temp3");
+const send_temp_btn_c = document.getElementById("send_temp-btn3");
+
+send_temp_btn_c.addEventListener("click", function () {
+  var maxTemp = max_temp_input_c.value;
+  var minTemp = min_temp_input_c.value;
+
+  // Publish the Temps to the MQTT topic
+  client.publish("room_c/temp/max", maxTemp, function (err) {
+    if (err) {
+      console.error("Error publishing to 'room_c/temp/max': " + err);
+    } else {
+      console.log("Published to 'room_c/temp/max': " + maxTemp);
+    }
+  });
+
+  client.publish("room_c/temp/min", minTemp, function (err) {
+    if (err) {
+      console.error("Error publishing to 'room_c/temp/min': " + err);
+    } else {
+      console.log("Published to 'room_c/temp/min': " + minTemp);
+    }
+  });
+});
+
+const max_hum_input_c = document.getElementById("max_hum3");
+const min_hum_input_c = document.getElementById("min_hum3");
+const send_hum_btn_c = document.getElementById("send_hum-btn3");
+
+send_hum_btn_c.addEventListener("click", function () {
+  var maxHum = max_hum_input_c.value;
+  var minHum = min_hum_input_c.value;
+
+  // Publish the Temps to the MQTT topic
+  client.publish("room_c/hum/max", maxHum, function (err) {
+    if (err) {
+      console.error("Error publishing to 'room_c/hum/max': " + err);
+    } else {
+      console.log("Published to 'room_c/hum/max': " + maxHum);
+    }
+  });
+
+  client.publish("room_c/hum/min", minHum, function (err) {
+    if (err) {
+      console.error("Error publishing to 'room_c/hum/min': " + err);
+    } else {
+      console.log("Published to 'room_c/hum/min': " + minHum);
+    }
+  });
+});
+
+// ----------------Send Alarm ON/OFF for MOVEMENT----------------
+document.getElementById("movementAlarm3").addEventListener("change", function () {
+  var movementAlarmStatus = this.checked ? "1" : "0";
+  client.publish("room_c/alarm/send", movementAlarmStatus);
+});
+
+// Send Cancel for MOVEMENT
+document.getElementById("cancelAlarmBtn3").addEventListener("click", function () {
+  // Was the alarm triggered?
+  if (alarm == "1") {
+    client.publish("room_c/alarm/send", "2");
+  } else {
+    window.alert("Cannot cancel the alarm because it was not triggered!");
+    console.log("Cannot Send!");
+  }
+});
+
+// ----------------Send Alarm ON/OFF for MOVEMENT----------------
+
+// Send Alarm ON/OFF for Smoke
+document.getElementById("smokeAlarm3").addEventListener("change", function () {
+var smokeAlarmStatus = this.checked ? "1" : "0";
+client.publish("room_c/smoke/send", smokeAlarmStatus);
+});
+
+// Send Cancel for Smoke
+document.getElementById("cancelSmokeAlarmBtn3").addEventListener("click", function () {
+  // Was the alarm triggered?
+  if (smoke == "1") {
+    client.publish("room_c/smoke/send", "2");
+  } else {
+    window.alert("Cannot cancel the alarm because it was not triggered!");
+    console.log("Cannot Send!");
+  }
+});
+
+// ----------------Send Alarm ON/OFF for AC----------------
+
+// Send Alarm ON/OFF for AC
+document.getElementById("acStatus3").addEventListener("change", function () {
+var acStatus = this.checked ? "1" : "0";
+client.publish("room_c/ac/send", acStatus);
+});
