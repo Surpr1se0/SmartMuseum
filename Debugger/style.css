@@ -8,10 +8,15 @@ h1 {
   color: #333;
 }
 
-input[type="button"] {
-  padding: 10px;
-  font-size: 16px;
-  margin-bottom: 20px;
+input,
+button,
+label {
+  margin-bottom: 10px;
+}
+
+input[type="text"],
+input[type="checkbox"] {
+  margin-right: 10px;
 }
 
 div {
@@ -23,8 +28,69 @@ label {
   margin-right: 10px;
 }
 
-span {
-  font-weight: bold;
+/* Style the tab */
+.tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+}
+
+/* Style the buttons that are used to open the tab content */
+.tab button {
+  background-color: inherit;
+  color: #333;
+  border-radius: 0px;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  margin-bottom: 0px;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-top: none;
+} 
+
+.tabcontent {
+  animation: fadeEffect 1s; /* Fading effect takes 1 second */
+}
+
+/* Go from zero to full opacity */
+@keyframes fadeEffect {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+/* Style the close button */
+.topright {
+  float: right;
+  cursor: pointer;
+  font-size: 28px;
+}
+
+.topright:hover {color: red;}
+
+.statusContainer {
+  background-color: #fff;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
 }
 
 #detectionsContainer {
@@ -34,4 +100,36 @@ span {
   border-radius: 5px;
   max-height: 300px;
   overflow-y: auto;
+}
+
+button {
+  padding: 8px 12px;
+  background-color: #4e59cc;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #2c36aa;
+}
+
+.checkbox-label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.checkbox-label input {
+  margin-right: 5px;
+}
+
+.checkbox-label span {
+  color: #333;
+}
+
+#Connect-btn {
+  padding: 10px;
+  font-size: 16px;
+  margin-bottom: 20px;
 }

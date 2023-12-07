@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Debugging App</title>
+    <title>Debugger App</title>
 
     <link rel="stylesheet" href="style.css" />
     <script
@@ -14,18 +14,51 @@
   </head>
 
   <body>
-    <h1>Debugging App</h1>
+    <h1>Debugger App</h1>
 
-    <input type="button" value="Connect" onclick="OnConnect()" /> <br />
+    <input
+      id="Connect-btn"
+      type="button"
+      value="Connect"
+      onclick="OnConnect()"
+    />
+    <br />
 
-    <!-- CONTAINER -->
-    <div id="detectionsContainer-A"></div>
-    
-    <div id="detectionsContainer-B"></div>
+    <div class="tab">
+      <button class="tablinks" onclick="changeTab(event, 'arduino1Content')">
+        Arduino 1
+      </button>
+      <button class="tablinks" onclick="changeTab(event, 'arduino2Content')">
+        Arduino 2
+      </button>
+      <button class="tablinks" onclick="changeTab(event, 'arduino3Content')">
+        Arduino 3
+      </button>
+    </div>
 
-    <div id="detectionsContainer-C"></div>
+    <!-- Arduino 1 Content -->
+    <div id="arduino1Content" class="tabcontent">
+      <span onclick="this.parentElement.style.display='none'" class="topright"
+        >&times</span
+      >
+      <div id="detections1Container"></div>
+    </div>
 
+    <!-- Arduino 2 Content -->
+    <div id="arduino2Content" class="tabcontent">
+      <span onclick="this.parentElement.style.display='none'" class="topright"
+        >&times</span
+      >
+      <div id="detections2Container"></div>
+    </div>
 
+    <!-- Arduino 3 Content -->
+    <div id="arduino3Content" class="tabcontent">
+      <span onclick="this.parentElement.style.display='none'" class="topright"
+        >&times</span
+      >
+      <div id="detections3Container"></div>
+    </div>
     <script src="app-debugger.js"></script>
   </body>
 </html>
