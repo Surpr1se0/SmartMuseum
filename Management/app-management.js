@@ -123,7 +123,7 @@ function OnConnect() {
       // Add new div to the page
       document.getElementById("detections1Container").appendChild(updateDiv);
 
-    } else if (topic.startsWith("room_b/")) {z
+    } else if (topic.startsWith("room_b/")) {
       // Print out the messages
       var updateMessage = message.toString();
       var updateDiv = document.createElement("div");
@@ -201,7 +201,7 @@ send_hum_btn.addEventListener("click", function () {
 
 // ----------------Send Alarm ON/OFF for MOVEMENT----------------
 document.getElementById("movementAlarm").addEventListener("change", function () {
-    var movementAlarmStatus = this.checked ? "1" : "0";
+    var movementAlarmStatus = this.checked ? "2" : "3";
     client.publish("room_a/alarm/send", movementAlarmStatus);
   });
 
@@ -220,7 +220,7 @@ document.getElementById("cancelAlarmBtn").addEventListener("click", function () 
 
 // Send Alarm ON/OFF for Smoke
 document.getElementById("smokeAlarm").addEventListener("change", function () {
-  var smokeAlarmStatus = this.checked ? "1" : "0";
+  var smokeAlarmStatus = this.checked ? "2" : "3";
   client.publish("room_a/smoke/send", smokeAlarmStatus);
 });
 
@@ -301,7 +301,7 @@ send_hum_btn_b.addEventListener("click", function () {
 
 // ----------------Send Alarm ON/OFF for MOVEMENT----------------
 document.getElementById("movementAlarm2").addEventListener("change", function () {
-  var movementAlarmStatus = this.checked ? "1" : "0";
+  var movementAlarmStatus = this.checked ? "2" : "3";
   client.publish("room_b/alarm/send", movementAlarmStatus);
 });
 
@@ -320,7 +320,7 @@ document.getElementById("cancelAlarmBtn2").addEventListener("click", function ()
 
 // Send Alarm ON/OFF for Smoke
 document.getElementById("smokeAlarm2").addEventListener("change", function () {
-var smokeAlarmStatus = this.checked ? "1" : "0";
+var smokeAlarmStatus = this.checked ? "2" : "3";
 client.publish("room_b/smoke/send", smokeAlarmStatus);
 });
 
@@ -401,7 +401,7 @@ send_hum_btn_c.addEventListener("click", function () {
 
 // ----------------Send Alarm ON/OFF for MOVEMENT----------------
 document.getElementById("movementAlarm3").addEventListener("change", function () {
-  var movementAlarmStatus = this.checked ? "1" : "0";
+  var movementAlarmStatus = this.checked ? "2" : "3";
   client.publish("room_c/alarm/send", movementAlarmStatus);
 });
 
@@ -420,7 +420,7 @@ document.getElementById("cancelAlarmBtn3").addEventListener("click", function ()
 
 // Send Alarm ON/OFF for Smoke
 document.getElementById("smokeAlarm3").addEventListener("change", function () {
-var smokeAlarmStatus = this.checked ? "1" : "0";
+var smokeAlarmStatus = this.checked ? "2" : "3";
 client.publish("room_c/smoke/send", smokeAlarmStatus);
 });
 

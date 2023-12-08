@@ -1,18 +1,18 @@
 #include <ESP8266WiFi.h>
-#include <PubSubClient.h>// WiFi
-const char *ssid = "MEO-EF0E60"; // Enter your WiFi name
+#include <PubSubClient.h>             // WiFi
+const char *ssid = "MEO-EF0E60";      // Enter your WiFi name
 const char *password = "ecd0f15b64";  // Enter WiFi password
 
 // MQTT Brooker Login
-const char* mqtt_user = "user1";
-const char* mqtt_password = "user1";
+const char *mqtt_user = "user1";
+const char *mqtt_password = "user1";
 
 // MQTT Broker
-const char *mqtt_broker = "192.168.1.71"; // Enter your WiFi or Ethernet IP
+const char *mqtt_broker = "192.168.1.71";  // Enter your WiFi or Ethernet IP
 const char *topic = "room_b/#";
 const int mqtt_port = 1883;
-const char* mqttWillTopic = "room_b/alive";
-const char* mqttWillMessage = "Client has died :(";
+const char *mqttWillTopic = "room_b/alive";
+const char *mqttWillMessage = "Client has died :(";
 
 // VARIABLES
 String max_temp;
@@ -20,11 +20,12 @@ String min_temp;
 String max_hum;
 String min_hum;
 
-String alarm; // [ON/OFF/CANCEL]
-String alarm_update; // [TRUE/FALSE]
-String smoke; // [ON/OFF/CANCEL]
-String smoke_update; // [TRUE/FALSE]
-String ac;    // [ON/OFF]
+String alarm;         // [TRIGGERED/NOT TRIGGERED/CANCEL]
+String alarm_status;  // [ON/OFF]
+String smoke;         // [TRIGGERED/NOT TRIGGERED/CANCEL]
+String smoke_status;  // [TRUE/FALSE]
+String ac = "0";      // [ON/OFF]
+String ac_update;
 
 WiFiClient espClient;
 PubSubClient client(espClient);
@@ -32,27 +33,27 @@ PubSubClient client(espClient);
 void setup() {
   // Set software serial baud to 115200;
   Serial.begin(115200);
- 
+
   // connecting to a WiFi network
   WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.println("Connecting to WiFi..");
   }
- 
+
   Serial.println("Connected to the WiFi network");
- 
+
   //connecting to a mqtt broker
   client.setServer(mqtt_broker, mqtt_port);
   client.setCallback(callback);
   //client.setWill(mqttWillTopic, mqttWillMessage, 1, false);
- 
+
   while (!client.connected()) {
-    String client_id = "NODE_ROOM_B";
+    String client_id = "NODE_room_b";
     client_id += String(WiFi.macAddress());
- 
+
     Serial.printf("The client %s connects to mosquitto mqtt broker\n", client_id.c_str());
- 
+
     if (client.connect(client_id.c_str(), mqtt_user, mqtt_password)) {
       Serial.println("Public mqtt broker connected");
     } else {
@@ -64,126 +65,125 @@ void setup() {
   //subscribes
   client.subscribe("room_b/temp/max");
   client.subscribe("room_b/temp/min");
-  
+
   client.subscribe("room_b/hum/max");
   client.subscribe("room_b/hum/min");
 
   client.subscribe("room_b/smoke/send");
-
   client.subscribe("room_b/alarm/send");
-
   client.subscribe("room_b/ac/send");
 }
 
 void callback(char *topic, byte *payload, unsigned int length) {
-  // Remove this 
+  // Remove this
   Serial.print("Message arrived in topic: ");
   Serial.println(topic);
   Serial.print("Message:");
   // Until here
- 
+
   for (int i = 0; i < length; i++) {
-    Serial.print((char) payload[i]);
+    Serial.print((char)payload[i]);
   }
- 
+
   Serial.println();
   Serial.println(" - - - - - - - - - - - -");
 
-  if(strcmp(topic, "room_b/alarm/send") == 0) {
+  if (strcmp(topic, "room_b/alarm/send") == 0) {
     handleAlarmMessage(topic, payload, length);
-  } else if(strcmp(topic, "room_b/smoke/send") == 0){
+  } else if (strcmp(topic, "room_b/smoke/send") == 0) {
     handleSmokeMessage(topic, payload, length);
-  } else if(strcmp(topic, "room_b/ac/send") == 0){
+  } else if (strcmp(topic, "room_b/ac/send") == 0) {
     handleACMessage(topic, payload, length);
   }
-  
+
   handleTemperatureMessage(topic, payload, length);
 }
 
 /*---------------------- HANDLES ----------------------*/
 
-void handleTemperatureMessage(char *topic, byte *payload, unsigned int length){
+void handleTemperatureMessage(char *topic, byte *payload, unsigned int length) {
   String message;
-  for(int i = 0; i < length; i++){
+  for (int i = 0; i < length; i++) {
     message += (char)payload[i];
   }
 
-  if(strcmp(topic, "room_b/temp/max") == 0){
+  if (strcmp(topic, "room_b/temp/max") == 0) {
     max_temp = message;
-  } else if (strcmp(topic, "room_b/temp/min") == 0){
+  } else if (strcmp(topic, "room_b/temp/min") == 0) {
     min_temp = message;
-  } else if (strcmp(topic, "room_b/hum/max") == 0){
+  } else if (strcmp(topic, "room_b/hum/max") == 0) {
     min_temp = message;
-  } else if (strcmp(topic, "room_b/hum/min") == 0){
+  } else if (strcmp(topic, "room_b/hum/min") == 0) {
     min_temp = message;
   }
 }
 
-void handleAlarmMessage(char *topic, byte *payload, unsigned int length){
+void handleAlarmMessage(char *topic, byte *payload, unsigned int length) {
   String message;
-  for(int i = 0; i < length; i++){
+  for (int i = 0; i < length; i++) {
     message += (char)payload[i];
   }
 
-  const char* alarmStatus = message.c_str();
+  const char *alarmStatus = message.c_str();
 
-  if(strcmp(alarmStatus, "0") == 0){
+  if (strcmp(alarmStatus, "0") == 0) {
     alarm = "0";
     Serial.print("Alarm is OFF: ");
     Serial.println(alarm);
-  } else if(strcmp(alarmStatus, "1") == 0) {
+  } else if (strcmp(alarmStatus, "1") == 0) {
     alarm = "1";
     Serial.print("Alarm is ON: ");
     Serial.println(alarm);
-  } else if(strcmp(alarmStatus, "2") == 0) {
+  } else if (strcmp(alarmStatus, "2") == 0) {
     alarm = "2";
     Serial.print("Alarm is CANCELED: ");
     Serial.println(alarm);
   }
 }
 
-void handleSmokeMessage(char *topic, byte *payload, unsigned int length){
+void handleSmokeMessage(char *topic, byte *payload, unsigned int length) {
   String message;
-  for(int i = 0; i < length; i++){
+  for (int i = 0; i < length; i++) {
     message += (char)payload[i];
   }
 
-  const char* smokeStatus = message.c_str();
+  const char *smokeStatus = message.c_str();
 
-  if(strcmp(smokeStatus, "0") == 0){
-    smoke = "0";
+  if (strcmp(smokeStatus, "0") == 0) {
+    smoke_status = "0";
     Serial.print("Smoke alarm is OFF: ");
     Serial.println(smoke);
-  } else if(strcmp(smokeStatus, "1") == 0) {
-    smoke = "1";
+  } else if (strcmp(smokeStatus, "1") == 0) {
+    smoke_status = "1";
     Serial.print("Smoke Alarm is ON: ");
     Serial.println(smoke);
-  } else if(strcmp(smokeStatus, "2") == 0) {
+  } else if (strcmp(smokeStatus, "2") == 0) {
     smoke = "2";
     Serial.print("Smoke Alarm is CANCELED: ");
     Serial.println(smoke);
   }
 }
 
-void handleACMessage(char *topic, byte *payload, unsigned int length){
+void handleACMessage(char *topic, byte *payload, unsigned int length) {
   String message;
-  for(int i = 0; i < length; i++){
+  for (int i = 0; i < length; i++) {
     message += (char)payload[i];
   }
 
-  const char* acStatus = message.c_str();
+  const char *ac_status = message.c_str();
 
-  if(strcmp(acStatus, "0") == 0){
+  // We can only turn off if it was manually turned on!
+  if (strcmp(ac_status, "0") == 0) {
     ac = "0";
     Serial.print("AC is OFF: ");
     Serial.println(ac);
     client.publish("room_b/ac/receive", String(ac).c_str());
-  } else if(strcmp(acStatus, "1") == 0) {
+  } else if (strcmp(ac_status, "1") == 0) {
     ac = "1";
     Serial.print("AC is ON: ");
     Serial.println(ac);
     client.publish("room_b/ac/receive", String(ac).c_str());
-  } 
+  }
 }
 
 /*---------------------- GETS ----------------------*/
@@ -217,8 +217,30 @@ void SendReadings() {
   Serial.println(hum);
   client.publish("room_b/hum/receive", String(hum).c_str());
 
+  // Convert values
+  float minTempFloat = atof(min_temp.c_str());
+  float maxTempFloat = atof(max_temp.c_str());
+  float minHumFloat = atof(min_hum.c_str());
+  float maxHumFloat = atof(max_hum.c_str());
+
+  // AC LOGIC
+  if(strcmp(String(ac).c_str(), "1") == 0){ // I turned it on
+    Serial.println("Turned ON manually, can't do nothing.");
+  }
+  else {
+    if (((temp > minTempFloat) || (temp < maxTempFloat)) && ((hum > mixHumFloat) || (hum < maxHumFloat))) {
+      ac_update = "1";
+      Serial.println("AC -> ON");
+      client.publish("room_b/ac/receive", String(ac_update).c_str());
+    }
+    else {
+      ac_update = "0";
+      Serial.println("AC -> OFF");
+      client.publish("room_b/ac/receive", String(ac_update).c_str());
+    }
+  }
+
   // SMOKE
-  // if() adicionar logica do alarme estar desligado
   int smoke = getRandomSmoke();
   Serial.print("Smoke: ");
   Serial.println(smoke);
@@ -236,21 +258,19 @@ void SendReadings() {
 
 void loop() {
   client.loop();
-  
+
   // Publish a message every 5 seconds
   static unsigned long lastAliveUpdate = 0;
-  if (millis() - lastAliveUpdate > 5000)
-  {
+  if (millis() - lastAliveUpdate > 5000) {
     client.publish("room_b/alive", "I am alive!");
     Serial.println("Message sent");
-    lastAliveUpdate = millis(); // Reset the timer
+    lastAliveUpdate = millis();  // Reset the timer
   }
 
-  // Update readings every 10 seconds
+  // Update readings every 10 seconds -> maybe should be more
   static unsigned long lastUpdateReadings = 0;
-  if(millis() - lastUpdateReadings > 10000){
+  if (millis() - lastUpdateReadings > 10000) {
     SendReadings();
-    lastUpdateReadings = millis(); // Reset the timer
+    lastUpdateReadings = millis();  // Reset the timer
   }
-
 }

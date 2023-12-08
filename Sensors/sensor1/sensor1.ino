@@ -1,14 +1,14 @@
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>             // WiFi
-const char *ssid = "";      // Enter your WiFi name
-const char *password = "";  // Enter WiFi password
+const char *ssid = "MEO-EF0E60";      // Enter your WiFi name
+const char *password = "ecd0f15b64";  // Enter WiFi password
 
 // MQTT Brooker Login
 const char *mqtt_user = "user1";
 const char *mqtt_password = "user1";
 
 // MQTT Broker
-const char *mqtt_broker = "192.168.1.77";  // Enter your WiFi or Ethernet IP
+const char *mqtt_broker = "192.168.1.71";  // Enter your WiFi or Ethernet IP
 const char *topic = "room_a/#";
 const int mqtt_port = 1883;
 const char *mqttWillTopic = "room_a/alive";
@@ -20,11 +20,11 @@ String min_temp;
 String max_hum;
 String min_hum;
 
-String alarm;         // [ON/OFF/CANCEL]
-String alarm_update;  // [TRUE/FALSE]
-String smoke;         // [ON/OFF/CANCEL]
-String smoke_update;  // [TRUE/FALSE]
-String ac = "0";            // [ON/OFF]
+String alarm;         // [TRIGGERED/NOT TRIGGERED/CANCEL]
+String alarm_status;  // [ON/OFF]
+String smoke;         // [TRIGGERED/NOT TRIGGERED/CANCEL]
+String smoke_status;  // [TRUE/FALSE]
+String ac = "0";      // [ON/OFF]
 String ac_update;
 
 WiFiClient espClient;
@@ -150,11 +150,11 @@ void handleSmokeMessage(char *topic, byte *payload, unsigned int length) {
   const char *smokeStatus = message.c_str();
 
   if (strcmp(smokeStatus, "0") == 0) {
-    smoke = "0";
+    smoke_status = "0";
     Serial.print("Smoke alarm is OFF: ");
     Serial.println(smoke);
   } else if (strcmp(smokeStatus, "1") == 0) {
-    smoke = "1";
+    smoke_status = "1";
     Serial.print("Smoke Alarm is ON: ");
     Serial.println(smoke);
   } else if (strcmp(smokeStatus, "2") == 0) {
@@ -228,7 +228,7 @@ void SendReadings() {
     Serial.println("Turned ON manually, can't do nothing.");
   }
   else {
-    if ((temp > minTempFloat) || (temp < maxTempFloat)) {// Insert the humidity condition
+    if (((temp > minTempFloat) || (temp < maxTempFloat)) && ((hum > mixHumFloat) || (hum < maxHumFloat))) {
       ac_update = "1";
       Serial.println("AC -> ON");
       client.publish("room_a/ac/receive", String(ac_update).c_str());
@@ -241,7 +241,6 @@ void SendReadings() {
   }
 
   // SMOKE
-  // if() adicionar logica do alarme estar desligado
   int smoke = getRandomSmoke();
   Serial.print("Smoke: ");
   Serial.println(smoke);

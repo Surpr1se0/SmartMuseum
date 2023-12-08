@@ -5,12 +5,16 @@ const options = {
 };
 
 // these variables refer to => STATUS
-var temperature_a, temperature_b, temperate_c;
+var temperature_a, temperature_b, temperature_c;
 var humidity_a, humidity_b, humidity_c;
 var alarm_a, alarm_b, alarm_c;
 var smoke_a, smoke_b, smoke_c;
 var ac_a, ac_b, ac_c;
 var alive_a, alive_b, alive_c = "0";
+// these variables refer to => ON/OFF for alarms
+var alarm_a_state, smoke_a_state = " ";
+var alarm_b_state, smoke_b_state = " ";
+var alarm_c_state, smoke_c_state = " ";
 
 const client = mqtt.connect("mqtt://localhost:9001", options);
 
@@ -24,6 +28,8 @@ function OnConnect() {
       "room_a/alarm/receive",
       "room_a/smoke/receive",
       "room_a/ac/receive",
+      "room_a/alarm/send",
+      "room_a/smoke/send",
 
       "room_b/alive",
       "room_b/temp/receive",
@@ -31,13 +37,17 @@ function OnConnect() {
       "room_b/alarm/receive",
       "room_b/smoke/receive",
       "room_b/ac/receive",
+      "room_b/alarm/send",
+      "room_b/smoke/send",  
 
-      "room_c/alive", 
+      "room_c/alive",
       "room_c/temp/receive",
       "room_c/hum/receive",
       "room_c/alarm/receive",
       "room_c/smoke/receive",
       "room_c/ac/receive",
+      "room_c/alarm/send",
+      "room_c/smoke/send",
     ],
     function (err) {
       if (!err) {
@@ -50,46 +60,104 @@ function OnConnect() {
 
   // Update when receive message
   client.on("message", function (topic, message) {
-    if (topic == "room_a/temp/receive") {
-      temperature_a = message;
-    } else if (topic == "room_a/hum/receive") {
-      humidity_a = message;
-    } else if (topic == "room_a/alarm/receive") {
-      alarm_a = message;
-    } else if (topic == "room_a/smoke/receive") {
-      smoke_a = message;
-    } else if (topic == "room_a/ac/receive") {
-      ac_a = message;
-    } else if (topic == "room_a/alive"){
-      alive_a = "1";
+    if (topic.startsWith("room_a/")) {
+      if (topic == "room_a/temp/receive") {
+        temperature_a = message;
+      } else if (topic == "room_a/hum/receive") {
+        humidity_a = message;
+      } else if (topic == "room_a/alarm/receive") {
+        alarm_a = message;
+      } else if (topic == "room_a/smoke/receive") {
+        smoke_a = message;
+      } else if (topic == "room_a/ac/receive") {
+        ac_a = message;
+      } else if (topic == "room_a/alive") {
+        alive_a = "1";
+      } else if (topic == "room_a/alarm/send") {
+        if (message == "2") {
+          alarm_a_state = "ON";
+        } else if (message == "3") {
+          alarm_a_state = "OFF";
+        } else {
+          alarm_a_state = " ";
+        }
+      } else if (topic == "room_a/smoke/send") {
+        if (message == "2") {
+          smoke_a_state = "ON";
+        } else if (message == "3") {
+          smoke_a_state = "OFF";
+        } else {
+          smoke_a_state = " ";
+        }
+      }
+      updateValues_A();
+      console.log("Received from node A");
     }
+    if (topic.startsWith("room_b/")) {
+      if (topic == "room_b/temp/receive") {
+        temperature_b = message;
+      } else if (topic == "room_b/hum/receive") {
+        humidity_b = message;
+      } else if (topic == "room_b/alarm/receive") {
+        alarm_b = message;
+      } else if (topic == "room_b/smoke/receive") {
+        smoke_b = message;
+      } else if (topic == "room_b/ac/receive") {
+        ac_b = message;
+      } else if (topic == "room_b/alive") {
+        alive_b = "1";
+      } else if (topic == "room_b/alarm/send") {
+        if (message == "2") {
+          alarm_b_state = "ON";
+        } else if (message == "3") {
+          alarm_b_state = "OFF";
+        } else {
+          alarm_b_state = " ";
+        }
+      } else if (topic == "room_b/smoke/send") {
+        if (message == "2") {
+          smoke_b_state = "ON";
+        } else if (message == "3") {
+          smoke_b_state = "OFF";
+        } else {
+          smoke_b_state = " ";
+        }
+      }
 
-    if (topic == "room_b/temp/receive") {
-      temperature_b = message;
-    } else if (topic == "room_b/hum/receive") {
-      humidity_b = message;
-    } else if (topic == "room_b/alarm/receive") {
-      alarm_b = message;
-    } else if (topic == "room_b/smoke/receive") {
-      smoke_b = message;
-    } else if (topic == "room_b/ac/receive") {
-      ac_b = message;
-    } else if (topic == "room_b/alive"){
-      alive_b = "1";
-    }
-
-    if (topic == "room_c/temp/receive") {
-      temperature_c = message;
-    } else if (topic == "room_c/hum/receive") {
-      humidity_c = message;
-    } else if (topic == "room_c/alarm/receive") {
-      alarm_c = message;
-    } else if (topic == "room_c/smoke/receive") {
-      smoke_c = message;
-    } else if (topic == "room_c/ac/receive") {
-      ac_c = message;
-    } else if (topic == "room_c/alive"){
-      alive_c = "1";
+      updateValues_B();
+      console.log("received from node B");
+    } else if (topic.startsWith("room_c/")) {
+      if (topic == "room_c/temp/receive") {
+        temperature_c = message;
+      } else if (topic == "room_c/hum/receive") {
+        humidity_c = message;
+      } else if (topic == "room_c/alarm/receive") {
+        alarm_c = message;
+      } else if (topic == "room_c/smoke/receive") {
+        smoke_c = message;
+      } else if (topic == "room_c/ac/receive") {
+        ac_c = message;
+      } else if (topic == "room_c/alive") {
+        alive_c = "1";
+      } else if (topic == "room_c/alarm/send") {
+        if (message == "2") {
+          alarm_c_state = "ON";
+        } else if (message == "3") {
+          alarm_c_state = "OFF";
+        } else {
+          alarm_c_state = " ";
+        }
+      } else if (topic == "room_c/smoke/send") {
+        if (message == "2") {
+          smoke_c_state = "ON";
+        } else if (message == "3") {
+          smoke_c_state = "OFF";
+        } else {
+          smoke_c_state = " ";
+        }
+      }
+      updateValues_C();
+      console.log("received from node C");
     }
 
     // Print out the messages
@@ -100,8 +168,6 @@ function OnConnect() {
 
     // Add new div to the page
     document.getElementById("detectionsContainer").appendChild(updateDiv);
-
-    updateValues_A();
   });
 }
 
@@ -110,8 +176,10 @@ function updateValues_A() {
   document.getElementById("temperatureValue_a").innerText = temperature_a;
   document.getElementById("humidityValue_a").innerText = humidity_a;
   document.getElementById("acValue_a").innerText = ac_a;
-  document.getElementById("smokeValue_a").innerText = smoke_a;
-  document.getElementById("alarmValue_a").innerText = alarm_a;
+  document.getElementById("smokeValue_a").innerText =
+    smoke_a + " " + smoke_a_state;
+  document.getElementById("alarmValue_a").innerText =
+    alarm_a + " " + alarm_a_state;
 }
 
 // FOR ARDUINO NUMBER 2
@@ -119,16 +187,17 @@ function updateValues_B() {
   document.getElementById("temperatureValue_b").innerText = temperature_b;
   document.getElementById("humidityValue_b").innerText = humidity_b;
   document.getElementById("acValue_b").innerText = ac_b;
-  document.getElementById("smokeValue_b").innerText = smoke_b;
-  document.getElementById("alarmValue_b").innerText = alarm_b;
+  document.getElementById("smokeValue_b").innerText = smoke_b + " " + smoke_b_state;
+  document.getElementById("alarmValue_b").innerText = alarm_b + " " + alarm_b_state;;
 }
 
+// FOR ARDUINO NUMBER 3
 function updateValues_C() {
   document.getElementById("temperatureValue_c").innerText = temperature_c;
   document.getElementById("humidityValue_c").innerText = humidity_c;
   document.getElementById("acValue_c").innerText = ac_c;
-  document.getElementById("smokeValue_c").innerText = smoke_c;
-  document.getElementById("alarmValue_c").innerText = alarm_c;
+  document.getElementById("smokeValue_c").innerText = smoke_c + " " + smoke_c_state;
+  document.getElementById("alarmValue_c").innerText = alarm_c + " " + alarm_c_state;
 }
 
 function changeTab(event, arduinoNum) {
@@ -150,5 +219,4 @@ function changeTab(event, arduinoNum) {
   // Show the current tab, and add an "active" class to the button that opened the tab
   document.getElementById(arduinoNum).style.display = "block";
   event.currentTarget.className += " active";
-} 
-
+}
