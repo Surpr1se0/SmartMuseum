@@ -155,6 +155,10 @@ send_temp_btn.addEventListener("click", function () {
   var maxTemp = max_temp_input.value;
   var minTemp = min_temp_input.value;
 
+  if (minTemp > maxTemp) {
+    window.alert("Insert valid values!");
+  }
+
   // Publish the Temps to the MQTT topic
   client.publish("room_a/temp/max", maxTemp, function (err) {
     if (err) {
@@ -180,6 +184,10 @@ const send_hum_btn = document.getElementById("send_hum-btn");
 send_hum_btn.addEventListener("click", function () {
   var maxHum = max_hum_input.value;
   var minHum = min_hum_input.value;
+
+  if (minTemp > maxTemp) {
+    window.alert("Cannot cancel the alarm because it was not triggered!");
+  }
 
   // Publish the Temps to the MQTT topic
   client.publish("room_a/hum/max", maxHum, function (err) {
@@ -211,7 +219,7 @@ document.getElementById("cancelAlarmBtn").addEventListener("click", function () 
     if (alarm == "1") {
       client.publish("room_a/alarm/send", "2");
     } else {
-      window.alert("Cannot cancel the alarm because it was not triggered!");
+      window.alert("Insert valid values!");
       console.log("Cannot Send!");
     }
   });
