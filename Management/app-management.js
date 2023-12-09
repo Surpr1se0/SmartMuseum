@@ -185,8 +185,8 @@ send_hum_btn.addEventListener("click", function () {
   var maxHum = max_hum_input.value;
   var minHum = min_hum_input.value;
 
-  if (minTemp > maxTemp) {
-    window.alert("Cannot cancel the alarm because it was not triggered!");
+  if (minHum > maxHum) {
+    window.alert("Insert valid values!");
   }
 
   // Publish the Temps to the MQTT topic
@@ -216,7 +216,7 @@ document.getElementById("movementAlarm").addEventListener("change", function () 
 // Send Cancel for MOVEMENT
 document.getElementById("cancelAlarmBtn").addEventListener("click", function () {
     // Was the alarm triggered?
-    if (alarm == "1") {
+    if (alarm_A == "1") {
       client.publish("room_a/alarm/send", "2");
     } else {
       window.alert("Insert valid values!");
@@ -235,7 +235,7 @@ document.getElementById("smokeAlarm").addEventListener("change", function () {
 // Send Cancel for Smoke
 document.getElementById("cancelSmokeAlarmBtn").addEventListener("click", function () {
     // Was the alarm triggered?
-    if (smoke == "1") {
+    if (smoke_A == "1") {
       client.publish("room_a/smoke/send", "2");
     } else {
       window.alert("Cannot cancel the alarm because it was not triggered!");
@@ -263,6 +263,10 @@ send_temp_btn_b.addEventListener("click", function () {
   var maxTemp = max_temp_input_b.value;
   var minTemp = min_temp_input_b.value;
 
+  if (minTemp > maxTemp) {
+    window.alert("Insert valid values!");
+  }
+
   // Publish the Temps to the MQTT topic
   client.publish("room_b/temp/max", maxTemp, function (err) {
     if (err) {
@@ -288,6 +292,10 @@ const send_hum_btn_b = document.getElementById("send_hum-btn2");
 send_hum_btn_b.addEventListener("click", function () {
   var maxHum = max_hum_input_b.value;
   var minHum = min_hum_input_b.value;
+
+  if (minHum > maxHum) {
+    window.alert("Insert valid values!");
+  }
 
   // Publish the Temps to the MQTT topic
   client.publish("room_b/hum/max", maxHum, function (err) {
@@ -316,7 +324,7 @@ document.getElementById("movementAlarm2").addEventListener("change", function ()
 // Send Cancel for MOVEMENT
 document.getElementById("cancelAlarmBtn2").addEventListener("click", function () {
   // Was the alarm triggered?
-  if (alarm == "1") {
+  if (alarm_B == "1") {
     client.publish("room_b/alarm/send", "2");
   } else {
     window.alert("Cannot cancel the alarm because it was not triggered!");
@@ -335,7 +343,7 @@ client.publish("room_b/smoke/send", smokeAlarmStatus);
 // Send Cancel for Smoke
 document.getElementById("cancelSmokeAlarmBtn2").addEventListener("click", function () {
   // Was the alarm triggered?
-  if (smoke == "1") {
+  if (smoke_B == "1") {
     client.publish("room_b/smoke/send", "2");
   } else {
     window.alert("Cannot cancel the alarm because it was not triggered!");
@@ -363,6 +371,10 @@ send_temp_btn_c.addEventListener("click", function () {
   var maxTemp = max_temp_input_c.value;
   var minTemp = min_temp_input_c.value;
 
+  if (minTemp > maxTemp) {
+    window.alert("Insert valid values!");
+  }
+
   // Publish the Temps to the MQTT topic
   client.publish("room_c/temp/max", maxTemp, function (err) {
     if (err) {
@@ -388,6 +400,10 @@ const send_hum_btn_c = document.getElementById("send_hum-btn3");
 send_hum_btn_c.addEventListener("click", function () {
   var maxHum = max_hum_input_c.value;
   var minHum = min_hum_input_c.value;
+
+  if (minHum > maxHum) {
+    window.alert("Insert valid values!");
+  }
 
   // Publish the Temps to the MQTT topic
   client.publish("room_c/hum/max", maxHum, function (err) {
@@ -416,7 +432,7 @@ document.getElementById("movementAlarm3").addEventListener("change", function ()
 // Send Cancel for MOVEMENT
 document.getElementById("cancelAlarmBtn3").addEventListener("click", function () {
   // Was the alarm triggered?
-  if (alarm == "1") {
+  if (alarm_C == "1") {
     client.publish("room_c/alarm/send", "2");
   } else {
     window.alert("Cannot cancel the alarm because it was not triggered!");
@@ -435,7 +451,7 @@ client.publish("room_c/smoke/send", smokeAlarmStatus);
 // Send Cancel for Smoke
 document.getElementById("cancelSmokeAlarmBtn3").addEventListener("click", function () {
   // Was the alarm triggered?
-  if (smoke == "1") {
+  if (smoke_C == "1") {
     client.publish("room_c/smoke/send", "2");
   } else {
     window.alert("Cannot cancel the alarm because it was not triggered!");
