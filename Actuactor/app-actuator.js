@@ -2,6 +2,12 @@ const options = {
   clientId: "ACTUATOR_APP",
   username: "user1",
   password: "user1",
+  will: {
+    topic: "room_a/alive",
+    payload: "Node A is NOT Alive!",
+    qos: 1,
+    retain: true
+  }
 };
 
 // these variables refer to => STATUS
@@ -10,11 +16,15 @@ var humidity_a, humidity_b, humidity_c;
 var alarm_a, alarm_b, alarm_c;
 var smoke_a, smoke_b, smoke_c;
 var ac_a, ac_b, ac_c;
-var alive_a, alive_b, alive_c = "0";
+var alive_a,alive_b,alive_c = "0";
 // these variables refer to => ON/OFF for alarms
 var alarm_a_state, smoke_a_state = " ";
 var alarm_b_state, smoke_b_state = " ";
 var alarm_c_state, smoke_c_state = " ";
+
+var last_alive_a = 0;
+var last_alive_b = 0;
+var last_alive_c = 0;
 
 const client = mqtt.connect("mqtt://localhost:9001", options);
 
@@ -38,7 +48,7 @@ function OnConnect() {
       "room_b/smoke/receive",
       "room_b/ac/receive",
       "room_b/alarm/send",
-      "room_b/smoke/send",  
+      "room_b/smoke/send",
 
       "room_c/alive",
       "room_c/temp/receive",
@@ -57,9 +67,11 @@ function OnConnect() {
       }
     }
   );
-
+  checkAliveTimeout();
   // Update when receive message
   client.on("message", function (topic, message) {
+    checkAliveTimeout();
+
     if (topic.startsWith("room_a/")) {
       if (topic == "room_a/temp/receive") {
         temperature_a = message;
@@ -72,7 +84,8 @@ function OnConnect() {
       } else if (topic == "room_a/ac/receive") {
         ac_a = message;
       } else if (topic == "room_a/alive") {
-        alive_a = "1";
+        last_alive_a = new Date().getTime();
+        console.log("Received LWT message:", message.toString());
       } else if (topic == "room_a/alarm/send") {
         if (message == "2") {
           alarm_a_state = "ON";
@@ -105,7 +118,8 @@ function OnConnect() {
       } else if (topic == "room_b/ac/receive") {
         ac_b = message;
       } else if (topic == "room_b/alive") {
-        alive_b = "1";
+        last_alive_b = new Date().getTime();
+        console.log("Received LWT message:", message.toString());
       } else if (topic == "room_b/alarm/send") {
         if (message == "2") {
           alarm_b_state = "ON";
@@ -138,7 +152,8 @@ function OnConnect() {
       } else if (topic == "room_c/ac/receive") {
         ac_c = message;
       } else if (topic == "room_c/alive") {
-        alive_c = "1";
+        last_alive_c = new Date().getTime();
+        console.log("Received LWT message:", message.toString());
       } else if (topic == "room_c/alarm/send") {
         if (message == "2") {
           alarm_c_state = "ON";
@@ -187,8 +202,10 @@ function updateValues_B() {
   document.getElementById("temperatureValue_b").innerText = temperature_b;
   document.getElementById("humidityValue_b").innerText = humidity_b;
   document.getElementById("acValue_b").innerText = ac_b;
-  document.getElementById("smokeValue_b").innerText = smoke_b + " " + smoke_b_state;
-  document.getElementById("alarmValue_b").innerText = alarm_b + " " + alarm_b_state;;
+  document.getElementById("smokeValue_b").innerText =
+    smoke_b + " " + smoke_b_state;
+  document.getElementById("alarmValue_b").innerText =
+    alarm_b + " " + alarm_b_state;
 }
 
 // FOR ARDUINO NUMBER 3
@@ -196,10 +213,62 @@ function updateValues_C() {
   document.getElementById("temperatureValue_c").innerText = temperature_c;
   document.getElementById("humidityValue_c").innerText = humidity_c;
   document.getElementById("acValue_c").innerText = ac_c;
-  document.getElementById("smokeValue_c").innerText = smoke_c + " " + smoke_c_state;
-  document.getElementById("alarmValue_c").innerText = alarm_c + " " + alarm_c_state;
+  document.getElementById("smokeValue_c").innerText =
+    smoke_c + " " + smoke_c_state;
+  document.getElementById("alarmValue_c").innerText =
+    alarm_c + " " + alarm_c_state;
 }
 
+// Check if Nodes are Alive to send warning messages
+function checkAliveTimeout() {
+  var currentTime = new Date().getTime();
+
+  // room A
+  if (currentTime - last_alive_a > 6000) {
+    alive_a = "0";
+    // Send message to Management application
+    client.publish("room_a/alive", "Node A is NOT Alive!", function (err) {
+      if (err) {
+        console.error("Error publishing to 'room_a/alive': " + err);
+      } else {
+        console.log("Published to 'room_a/alive': Node A is NOT Alive!");
+      }
+    });
+  } else {
+    alive_a = "1";
+  }
+
+  // room B
+  if (currentTime - last_alive_b > 6000) {
+    alive_b = "0";
+    // Send message to management application
+    client.publish("room_b/alive", "Node B is NOT Alive!", function (err) {
+      if (err) {
+        console.error("Error publishing to 'room_b/alive': " + err);
+      } else {
+        console.log("Published to 'room_b/alive': Node B is NOT Alive!");
+      }
+    });
+  } else {
+    alive_b = "1";
+  }
+
+  // Room C
+  if (currentTime - last_alive_c > 6000) {
+    alive_c = "0";
+    // Send message to management application
+    client.publish("room_c/alive", "Node C is NOT Alive!", function (err) {
+      if (err) {
+        console.error("Error publishing to 'room_c/alive': " + err);
+      } else {
+        console.log("Published to 'room_c/alive': Node C is NOT Alive!");
+      }
+    });
+  } else {
+    alive_c = "1";
+  }
+}
+// Change the tabs in View
 function changeTab(event, arduinoNum) {
   // Declare all variables
   var i, tabcontent, tablinks;

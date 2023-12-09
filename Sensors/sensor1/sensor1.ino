@@ -1,7 +1,7 @@
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>             // WiFi
-const char *ssid = "MEO-EF0E60";      // Enter your WiFi name
-const char *password = "ecd0f15b64";  // Enter WiFi password
+const char *ssid = "";      // Enter your WiFi name
+const char *password = "";  // Enter WiFi password
 
 // MQTT Brooker Login
 const char *mqtt_user = "user1";
@@ -54,7 +54,7 @@ void setup() {
 
     Serial.printf("The client %s connects to mosquitto mqtt broker\n", client_id.c_str());
 
-    if (client.connect(client_id.c_str(), mqtt_user, mqtt_password)) {
+    if (client.connect(client_id.c_str(), mqtt_user, mqtt_password, mqttWillTopic, 1, true, mqttWillMessage)) {
       Serial.println("Public mqtt broker connected");
     } else {
       Serial.print("failed with state ");
@@ -228,7 +228,7 @@ void SendReadings() {
     Serial.println("Turned ON manually, can't do nothing.");
   }
   else {
-    if (((temp > minTempFloat) || (temp < maxTempFloat)) && ((hum > mixHumFloat) || (hum < maxHumFloat))) {
+    if (((temp > minTempFloat) || (temp < maxTempFloat)) && ((hum > minHumFloat) || (hum < maxHumFloat))) {
       ac_update = "1";
       Serial.println("AC -> ON");
       client.publish("room_a/ac/receive", String(ac_update).c_str());
@@ -261,7 +261,7 @@ void loop() {
 
   // Publish a message every 5 seconds
   static unsigned long lastAliveUpdate = 0;
-  if (millis() - lastAliveUpdate > 5000) {
+  if (millis() - lastAliveUpdate > 2000) {
     client.publish("room_a/alive", "I am alive!");
     Serial.println("Message sent");
     lastAliveUpdate = millis();  // Reset the timer
