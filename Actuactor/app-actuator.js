@@ -6,8 +6,8 @@ const options = {
     topic: "room_a/alive",
     payload: "Node A is NOT Alive!",
     qos: 1,
-    retain: true
-  }
+    retain: true,
+  },
 };
 
 // these variables refer to => STATUS
@@ -16,12 +16,18 @@ var humidity_a, humidity_b, humidity_c;
 var alarm_a, alarm_b, alarm_c;
 var smoke_a, smoke_b, smoke_c;
 var ac_a, ac_b, ac_c;
-var alive_a,alive_b,alive_c = "0";
+var alive_a,
+  alive_b,
+  alive_c = "0";
 // these variables refer to => ON/OFF for alarms
-var alarm_a_state, smoke_a_state = " ";
-var alarm_b_state, smoke_b_state = " ";
-var alarm_c_state, smoke_c_state = " ";
+var alarm_a_state,
+  smoke_a_state = " ";
+var alarm_b_state,
+  smoke_b_state = " ";
+var alarm_c_state,
+  smoke_c_state = " ";
 
+// these variables refer to alive status in seconds
 var last_alive_a = 0;
 var last_alive_b = 0;
 var last_alive_c = 0;
@@ -87,6 +93,7 @@ function OnConnect() {
         last_alive_a = new Date().getTime();
         console.log("Received LWT message:", message.toString());
       } else if (topic == "room_a/alarm/send") {
+        // Update ON & OFF values for Alarms
         if (message == "3") {
           alarm_a_state = "ON";
         } else if (message == "2") {
@@ -121,6 +128,7 @@ function OnConnect() {
         last_alive_b = new Date().getTime();
         console.log("Received LWT message:", message.toString());
       } else if (topic == "room_b/alarm/send") {
+        // Update ON & OFF values for Alarms
         if (message == "3") {
           alarm_b_state = "ON";
         } else if (message == "2") {
@@ -155,6 +163,7 @@ function OnConnect() {
         last_alive_c = new Date().getTime();
         console.log("Received LWT message:", message.toString());
       } else if (topic == "room_c/alarm/send") {
+        // Update ON & OFF values for Alarms
         if (message == "3") {
           alarm_c_state = "ON";
         } else if (message == "2") {

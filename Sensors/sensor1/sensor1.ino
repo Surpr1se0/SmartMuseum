@@ -264,40 +264,20 @@ void SendReadings() {
   led_blinking_smoke = false;
 
   if ((strcmp(alarm_status.c_str(), "0") == 0) || (strcmp(alarm_status.c_str(), "2") == 0)) {
-    Serial.println("Entering LED Blinking for Alarm");
     led_blinking_alarm = false;
   } else {
-    Serial.println("Entering LED ELSE for Alarm");
     if (alarm == 1) {
-      Serial.println("Entering LED IF for Alarm");
       led_blinking_alarm = true;
     }
   }
 
   if ((strcmp(smoke_status.c_str(), "0") == 0) || (strcmp(smoke_status.c_str(), "2") == 0)) {
-    Serial.println("Entering LED Blinking for Smoke");
     led_blinking_smoke = false;
   } else {
-    Serial.println("Entering LED ELSE for Smoke");
     if (smoke == 1) {
-      Serial.println("Entering LED IF for Smoke");
       led_blinking_smoke = true;
     }
   }
-
-  Serial.print("Alarm Status: ");
-  Serial.println(alarm_status.c_str());
-  Serial.print("Alarm: ");
-  Serial.println(alarm);
-  Serial.print("LED Blinking for Alarm: ");
-  Serial.println(led_blinking_alarm);
-
-  Serial.print("Smoke Status: ");
-  Serial.println(smoke_status.c_str());
-  Serial.print("Smoke: ");
-  Serial.println(smoke);
-  Serial.print("LED Blinking for Smoke: ");
-  Serial.println(led_blinking_smoke);
 }
 
 /*-------------------------------------------------*/

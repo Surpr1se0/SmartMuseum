@@ -233,17 +233,17 @@ void SendReadings() {
   float maxHumFloat = atof(max_hum.c_str());
 
   // AC LOGIC
-  if (strcmp(String(ac).c_str(), "1") == 0) {  // I turned it on
-    Serial.println("Turned ON manually, can't do nothing.");
+  if (strcmp(String(ac).c_str(), "1") == 0) {  // Se ligado manualmente
+    Serial.println("AC manual turned on!");
   } else {
-    if (((temp > minTempFloat) || (temp < maxTempFloat)) && ((hum > minHumFloat) || (hum < maxHumFloat))) {
+    if ((temp > minTempFloat && temp < maxTempFloat) && (hum > minHumFloat && hum < maxHumFloat)) {
       ac_update = "1";
       Serial.println("AC -> ON");
-      client.publish("room_b/ac/receive", String(ac_update).c_str());
+      client.publish("room_b/ac/receive", ac_update.c_str());
     } else {
       ac_update = "0";
       Serial.println("AC -> OFF");
-      client.publish("room_b/ac/receive", String(ac_update).c_str());
+      client.publish("room_b/ac/receive", ac_update.c_str());
     }
   }
 
@@ -264,40 +264,20 @@ void SendReadings() {
   led_blinking_smoke = false;
 
   if ((strcmp(alarm_status.c_str(), "0") == 0) || (strcmp(alarm_status.c_str(), "2") == 0)) {
-    Serial.println("Entering LED Blinking for Alarm");
     led_blinking_alarm = false;
   } else {
-    Serial.println("Entering LED ELSE for Alarm");
     if (alarm == 1) {
-      Serial.println("Entering LED IF for Alarm");
       led_blinking_alarm = true;
     }
   }
 
   if ((strcmp(smoke_status.c_str(), "0") == 0) || (strcmp(smoke_status.c_str(), "2") == 0)) {
-    Serial.println("Entering LED Blinking for Smoke");
     led_blinking_smoke = false;
   } else {
-    Serial.println("Entering LED ELSE for Smoke");
     if (smoke == 1) {
-      Serial.println("Entering LED IF for Smoke");
       led_blinking_smoke = true;
     }
   }
-
-  Serial.print("Alarm Status: ");
-  Serial.println(alarm_status.c_str());
-  Serial.print("Alarm: ");
-  Serial.println(alarm);
-  Serial.print("LED Blinking for Alarm: ");
-  Serial.println(led_blinking_alarm);
-
-  Serial.print("Smoke Status: ");
-  Serial.println(smoke_status.c_str());
-  Serial.print("Smoke: ");
-  Serial.println(smoke);
-  Serial.print("LED Blinking for Smoke: ");
-  Serial.println(led_blinking_smoke);
 }
 
 /*-------------------------------------------------*/
@@ -323,10 +303,10 @@ void loop() {
   }
 
   if ((led_blinking_smoke && !smoke_canceled) || (led_blinking_alarm && !alarm_canceled)) {
-      digitalWrite(LED_BUILTIN, LOW);
-      delay(500);
-      digitalWrite(LED_BUILTIN, HIGH);
-      delay(500);
+    digitalWrite(LED_BUILTIN, LOW);
+    delay(500);
+    digitalWrite(LED_BUILTIN, HIGH);
+    delay(500);
   } else {
     digitalWrite(LED_BUILTIN, HIGH);
     led_blinking_alarm = false;
