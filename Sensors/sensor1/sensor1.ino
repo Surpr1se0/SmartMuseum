@@ -322,7 +322,7 @@ void loop() {
     lastUpdateReadings = millis();  // Reset the timer
   }
 
-  if (led_blinking_smoke || led_blinking_alarm) {
+  if ((led_blinking_smoke && !smoke_canceled) || (led_blinking_alarm && !alarm_canceled)) {
       digitalWrite(LED_BUILTIN, LOW);
       delay(500);
       digitalWrite(LED_BUILTIN, HIGH);
@@ -331,5 +331,7 @@ void loop() {
     digitalWrite(LED_BUILTIN, HIGH);
     led_blinking_alarm = false;
     led_blinking_smoke = false;
+    smoke_canceled = false;
+    alarm_canceled = false;
   }
 }
