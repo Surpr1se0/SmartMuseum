@@ -209,7 +209,7 @@ send_hum_btn.addEventListener("click", function () {
 
 // ----------------Send Alarm ON/OFF for MOVEMENT----------------
 document.getElementById("movementAlarm").addEventListener("change", function () {
-    var movementAlarmStatus = this.checked ? "2" : "3";
+    var movementAlarmStatus = this.checked ? "3" : "2";
     client.publish("room_a/alarm/send", movementAlarmStatus);
   });
 
@@ -217,7 +217,7 @@ document.getElementById("movementAlarm").addEventListener("change", function () 
 document.getElementById("cancelAlarmBtn").addEventListener("click", function () {
     // Was the alarm triggered?
     if (alarm_A == "1") {
-      client.publish("room_a/alarm/send", "2");
+      client.publish("room_a/alarm/send", "4");
     } else {
       window.alert("Insert valid values!");
       console.log("Cannot Send!");
@@ -228,7 +228,7 @@ document.getElementById("cancelAlarmBtn").addEventListener("click", function () 
 
 // Send Alarm ON/OFF for Smoke
 document.getElementById("smokeAlarm").addEventListener("change", function () {
-  var smokeAlarmStatus = this.checked ? "2" : "3";
+  var smokeAlarmStatus = this.checked ? "3" : "2";
   client.publish("room_a/smoke/send", smokeAlarmStatus);
 });
 
@@ -236,7 +236,7 @@ document.getElementById("smokeAlarm").addEventListener("change", function () {
 document.getElementById("cancelSmokeAlarmBtn").addEventListener("click", function () {
     // Was the alarm triggered?
     if (smoke_A == "1") {
-      client.publish("room_a/smoke/send", "2");
+      client.publish("room_a/smoke/send", "4");
     } else {
       window.alert("Cannot cancel the alarm because it was not triggered!");
       console.log("Cannot Send!");
@@ -317,7 +317,7 @@ send_hum_btn_b.addEventListener("click", function () {
 
 // ----------------Send Alarm ON/OFF for MOVEMENT----------------
 document.getElementById("movementAlarm2").addEventListener("change", function () {
-  var movementAlarmStatus = this.checked ? "2" : "3";
+  var movementAlarmStatus = this.checked ? "3" : "2";
   client.publish("room_b/alarm/send", movementAlarmStatus);
 });
 
@@ -325,7 +325,7 @@ document.getElementById("movementAlarm2").addEventListener("change", function ()
 document.getElementById("cancelAlarmBtn2").addEventListener("click", function () {
   // Was the alarm triggered?
   if (alarm_B == "1") {
-    client.publish("room_b/alarm/send", "2");
+    client.publish("room_b/alarm/send", "4");
   } else {
     window.alert("Cannot cancel the alarm because it was not triggered!");
     console.log("Cannot Send!");
@@ -336,7 +336,7 @@ document.getElementById("cancelAlarmBtn2").addEventListener("click", function ()
 
 // Send Alarm ON/OFF for Smoke
 document.getElementById("smokeAlarm2").addEventListener("change", function () {
-var smokeAlarmStatus = this.checked ? "2" : "3";
+var smokeAlarmStatus = this.checked ? "3" : "2";
 client.publish("room_b/smoke/send", smokeAlarmStatus);
 });
 
@@ -344,7 +344,7 @@ client.publish("room_b/smoke/send", smokeAlarmStatus);
 document.getElementById("cancelSmokeAlarmBtn2").addEventListener("click", function () {
   // Was the alarm triggered?
   if (smoke_B == "1") {
-    client.publish("room_b/smoke/send", "2");
+    client.publish("room_b/smoke/send", "4");
   } else {
     window.alert("Cannot cancel the alarm because it was not triggered!");
     console.log("Cannot Send!");
@@ -425,7 +425,7 @@ send_hum_btn_c.addEventListener("click", function () {
 
 // ----------------Send Alarm ON/OFF for MOVEMENT----------------
 document.getElementById("movementAlarm3").addEventListener("change", function () {
-  var movementAlarmStatus = this.checked ? "2" : "3";
+  var movementAlarmStatus = this.checked ? "3" : "2";
   client.publish("room_c/alarm/send", movementAlarmStatus);
 });
 
@@ -433,7 +433,7 @@ document.getElementById("movementAlarm3").addEventListener("change", function ()
 document.getElementById("cancelAlarmBtn3").addEventListener("click", function () {
   // Was the alarm triggered?
   if (alarm_C == "1") {
-    client.publish("room_c/alarm/send", "2");
+    client.publish("room_c/alarm/send", "4");
   } else {
     window.alert("Cannot cancel the alarm because it was not triggered!");
     console.log("Cannot Send!");
@@ -444,7 +444,7 @@ document.getElementById("cancelAlarmBtn3").addEventListener("click", function ()
 
 // Send Alarm ON/OFF for Smoke
 document.getElementById("smokeAlarm3").addEventListener("change", function () {
-var smokeAlarmStatus = this.checked ? "2" : "3";
+var smokeAlarmStatus = this.checked ? "3" : "2";
 client.publish("room_c/smoke/send", smokeAlarmStatus);
 });
 
@@ -452,7 +452,7 @@ client.publish("room_c/smoke/send", smokeAlarmStatus);
 document.getElementById("cancelSmokeAlarmBtn3").addEventListener("click", function () {
   // Was the alarm triggered?
   if (smoke_C == "1") {
-    client.publish("room_c/smoke/send", "2");
+    client.publish("room_c/smoke/send", "4");
   } else {
     window.alert("Cannot cancel the alarm because it was not triggered!");
     console.log("Cannot Send!");

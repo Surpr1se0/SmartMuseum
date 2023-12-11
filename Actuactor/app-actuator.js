@@ -87,17 +87,17 @@ function OnConnect() {
         last_alive_a = new Date().getTime();
         console.log("Received LWT message:", message.toString());
       } else if (topic == "room_a/alarm/send") {
-        if (message == "2") {
+        if (message == "3") {
           alarm_a_state = "ON";
-        } else if (message == "3") {
+        } else if (message == "2") {
           alarm_a_state = "OFF";
         } else {
           alarm_a_state = " ";
         }
       } else if (topic == "room_a/smoke/send") {
-        if (message == "2") {
+        if (message == "3") {
           smoke_a_state = "ON";
-        } else if (message == "3") {
+        } else if (message == "2") {
           smoke_a_state = "OFF";
         } else {
           smoke_a_state = " ";
@@ -121,17 +121,17 @@ function OnConnect() {
         last_alive_b = new Date().getTime();
         console.log("Received LWT message:", message.toString());
       } else if (topic == "room_b/alarm/send") {
-        if (message == "2") {
+        if (message == "3") {
           alarm_b_state = "ON";
-        } else if (message == "3") {
+        } else if (message == "2") {
           alarm_b_state = "OFF";
         } else {
           alarm_b_state = " ";
         }
       } else if (topic == "room_b/smoke/send") {
-        if (message == "2") {
+        if (message == "3") {
           smoke_b_state = "ON";
-        } else if (message == "3") {
+        } else if (message == "2") {
           smoke_b_state = "OFF";
         } else {
           smoke_b_state = " ";
@@ -155,17 +155,17 @@ function OnConnect() {
         last_alive_c = new Date().getTime();
         console.log("Received LWT message:", message.toString());
       } else if (topic == "room_c/alarm/send") {
-        if (message == "2") {
+        if (message == "3") {
           alarm_c_state = "ON";
-        } else if (message == "3") {
+        } else if (message == "2") {
           alarm_c_state = "OFF";
         } else {
           alarm_c_state = " ";
         }
       } else if (topic == "room_c/smoke/send") {
-        if (message == "2") {
+        if (message == "3") {
           smoke_c_state = "ON";
-        } else if (message == "3") {
+        } else if (message == "2") {
           smoke_c_state = "OFF";
         } else {
           smoke_c_state = " ";
